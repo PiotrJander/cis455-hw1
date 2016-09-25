@@ -5,15 +5,21 @@ import org.apache.log4j.Logger;
 public class HttpServer {
 
 	/**
-	 * Logger for this particular class
+     * Logger for this particular class TODO private?
 	 */
-	static Logger log = Logger.getLogger(HttpServer.class);
+    private static Logger log = Logger.getLogger(HttpServer.class);
 
 	public static void main(String args[]) throws InterruptedException
 	{
 		log.info("Start of Http Server");
 		
-		/* your code here */
+		// TODO handle args here
+
+        BlockingQueue<Request> queue = new BlockingQueue<>(10);
+
+        Daemon.INSTANCE.setQueue(queue);
+        (new Thread(Daemon.INSTANCE)).start();
+        (new Thread(new Worker(queue))).start();
 		
 		log.info("Http Server terminating");
 	}
