@@ -8,8 +8,6 @@ public class HttpServer {
     private static final int QUEUE_SIZE = 10;
     private static BlockingQueue<Request> queue = new BlockingQueue<>(QUEUE_SIZE);
 
-    private static Thread daemon;
-
     private final static int WORKERS_POOL_SIZE = 10;
     private static Thread[] workersPool = new Thread[WORKERS_POOL_SIZE];
 
@@ -19,11 +17,9 @@ public class HttpServer {
 		
 		// TODO handle args here
 
-        startDaemon();
         startWorkersPool();
 
         // call these when shutdown
-//        stopDaemon();
 //        stopWorkers();
 
         log.info("Http Server terminating");
@@ -37,23 +33,12 @@ public class HttpServer {
 //            workersPool[i].join();
 //        }
 //    }
-//
-//    private static void stopDaemon() throws InterruptedException {
-//        daemon.interrupt();
-//        daemon.join();
-//    }
 
     private static void startWorkersPool() {
         for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
             workersPool[i] = new Thread(new Worker(queue));
             workersPool[i].start();
         }
-    }
-
-    private static void startDaemon() {
-        Daemon.INSTANCE.setQueue(queue);
-        daemon = new Thread(Daemon.INSTANCE);
-        daemon.start();
     }
 
 }
