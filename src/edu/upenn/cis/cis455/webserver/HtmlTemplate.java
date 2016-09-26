@@ -1,6 +1,6 @@
 package edu.upenn.cis.cis455.webserver;
 
-public class HtmlTemplate {
+class HtmlTemplate {
     private String title;
     private String body;
 
@@ -9,7 +9,8 @@ public class HtmlTemplate {
         this.body = body;
     }
 
-    String toHtml() {
+    @Override
+    public String toString() {
         return
             "<!doctype html>\n" +
             "<html lang=\"en\">\n" +

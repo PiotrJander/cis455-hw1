@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
@@ -66,15 +67,18 @@ class Task {
     }
 
     private void controlPage() {
-        HtmlTemplate html = new HtmlTemplate("Control Panel", "<h1>Control Panel</p>");
+        HtmlTemplate html = new HtmlTemplate("Control Panel", "<h1>Control Panel</h1>");
         html.appendToBody("<p>Piotr Jander<br> piotr@sas.upenn.edu</p>");
         html.appendToBody("<h2>Thread pool</h2>" + "<dl>");
         for (Worker worker : HttpServer.getWorkersPool()) {
             html.appendToBody("<dt>" + worker.getWorkerId() + "</dt>");
-            html.appendToBody("<dd>" + worker.getCurrentRequestPath() + "</dd>");
+            String path = worker.getCurrentRequestPath();
+            String status = path == null ? "<i>waiting</i>" : path;
+            html.appendToBody("<dd>" + status + "</dd>");
         }
         html.appendToBody("</dl>");
-        html.appendToBody("<button><a href='/shutdown'>Shutdown server</a></button>");
+        html.appendToBody("<a href='/shutdown'><button>Shutdown server</button></a>");
+        response.setPayload(html.toString());
     }
 
     private void setPath() throws SendHttpResponseException {
@@ -85,8 +89,8 @@ class Task {
             if (!filePath.startsWith(root)) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException | IOException e) {
-            response.error(HttpStatus.BAD_REQUEST).send();
+        } catch (InvalidPathException | IOException e) {
+            response.error(HttpStatus.NOT_FOUND).send();
         }
     }
 
@@ -119,6 +123,6 @@ class Task {
             }
         }
         html.appendToBody("</ol>\n");
-        response.setPayload(html.toHtml());
+        response.setPayload(html.toString());
     }
 }
