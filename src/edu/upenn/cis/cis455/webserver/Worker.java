@@ -1,19 +1,20 @@
 package edu.upenn.cis.cis455.webserver;
 
 class Worker implements Runnable {
-    private BlockingQueue<Request> queue;
+    private BlockingQueue<TcpRequest> queue;
 
-    Worker(BlockingQueue<Request> queue) {
+    Worker(BlockingQueue<TcpRequest> queue) {
         this.queue = queue;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < 100; i++) {
+        while (true) {
             try {
-                System.out.println(queue.take().i);
+                (new Task(queue.take())).run();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                // the worker was interrupted; stop
+                return;
             }
         }
     }
