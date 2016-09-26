@@ -50,7 +50,7 @@ public class HttpServer {
 
     private static void startWorkersPool() {
         for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
-            workersPool[i] = new Thread(new Worker(queue));
+            workersPool[i] = new Thread(new Worker(queue, i));
             workersPool[i].start();
         }
     }
@@ -75,12 +75,12 @@ public class HttpServer {
     }
 
     private static void stopWorkers() {
-        for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
-            workersPool[i].interrupt();
+        for (Thread worker : workersPool) {
+            worker.interrupt();
         }
-        for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
+        for (Thread worker : workersPool) {
             try {
-                workersPool[i].join();
+                worker.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
