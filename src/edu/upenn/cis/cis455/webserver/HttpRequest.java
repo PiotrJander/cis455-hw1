@@ -43,17 +43,8 @@ class HttpRequest {
         }
     }
 
-    HttpResponse makePartialResponse() {
-        HttpResponse response = new HttpResponse();
-        response.setVersion(version);
-
-        if (this.isOk()) {
-            response.setStatus(HttpStatus.OK);
-        } else {
-            response.setStatus(HttpStatus.BAD_REQUEST);
-        }
-
-        return response;
+    HttpVersion getVersion() {
+        return version;
     }
 }
 
@@ -64,6 +55,16 @@ enum HttpMethod {
 }
 
 enum HttpVersion {
-    ONE_0,
-    ONE_1;
+    ONE_0("HTTP/1.0"),
+    ONE_1("HTTP/1.1");
+
+    private final String name;
+
+    HttpVersion(String name) {
+        this.name = name;
+    }
+
+    String getName() {
+        return name;
+    }
 }

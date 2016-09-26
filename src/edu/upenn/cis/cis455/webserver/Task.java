@@ -18,17 +18,28 @@ class Task {
 
     void run() {
         try (
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                OutputStream binaryOut = socket.getOutputStream();
+                PrintWriter out = new PrintWriter(binaryOut, true);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(
                                 socket.getInputStream()))
         ) {
             request = (new HttpParser(in)).parse();
-            response = request.makePartialResponse();
+            response = new HttpResponse(request);
 
-            // TODO respond with bad request here
+            try {
+                if (!request.isOk()) {
+                    response.error(HttpStatus.BAD_REQUEST).send();
+                }
 
-            processRequest();
+                processRequest();
+                response.send();
+            } catch (SendHttpResponseException e) {
+                response.sendOverSocket(binaryOut, out);
+            }
+
+            // look at response payload
+            // if file, if string, etc
 
 //            String inputLine, outputLine;
 //            KnockKnockProtocol kkp = new KnockKnockProtocol();
@@ -48,7 +59,7 @@ class Task {
         }
     }
 
-    private void processRequest() {
+    private void processRequest() throws SendHttpResponseException {
         switch (request.getPath()) {
             case "/shutdown":
                 HttpServer.stop();
@@ -62,27 +73,34 @@ class Task {
         }
     }
 
-    private void getItem() {
+    private void getItem() throws SendHttpResponseException {
         if (Files.isDirectory(filePath)) {
             getFile();
         } else if (Files.isRegularFile(filePath)) {
             getDirectoryListing();
         } else {
-            // TODO how to set other errors?
+            // file doesn't exist
+            response.error(HttpStatus.NOT_FOUND).send();
         }
     }
 
     private void getDirectoryListing() {
+        throw new UnsupportedOperationException();
     }
 
-    private void getFile() {
+    private void getFile() throws SendHttpResponseException {
+        try {
+            response.setPayload(Files.readAllBytes(filePath));
+        } catch (IOException e) {
+            response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        }
     }
 
     private void controlPage() {
         throw new UnsupportedOperationException();
     }
 
-    private void setPath() {
+    private void setPath() throws SendHttpResponseException {
         Path root = HttpServer.getRootDirectory();
         try {
             filePath = root.resolve(request.getPath()).toRealPath(LinkOption.NOFOLLOW_LINKS);
@@ -90,7 +108,7 @@ class Task {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException | IOException e) {
-            request.markAsBad();
+            response.error(HttpStatus.BAD_REQUEST).send();
         }
     }
 }
