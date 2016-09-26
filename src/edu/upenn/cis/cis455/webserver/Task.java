@@ -16,60 +16,37 @@ class Task {
         this.socket = tcpRequest.getSocket();
     }
 
-    void run() {
+    void run() throws IOException {
         try (
-                OutputStream binaryOut = socket.getOutputStream();
-                PrintWriter out = new PrintWriter(binaryOut, true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                socket.getInputStream()))
+            OutputStream binaryOut = socket.getOutputStream();
+            PrintWriter out = new PrintWriter(binaryOut, true);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(
+                            socket.getInputStream()))
         ) {
-            request = (new HttpParser(in)).parse();
-            response = new HttpResponse(request);
+            request = new HttpRequest(in);
 
             try {
-                if (!request.isOk()) {
-                    response.error(HttpStatus.BAD_REQUEST).send();
-                }
-
-                processRequest();
+                response = HttpResponse.createPartialResponse(request);
+                handleSpecialRequests();
+                setPath();
+                getItem();
                 response.send();
             } catch (SendHttpResponseException e) {
                 response.sendOverSocket(binaryOut, out);
             }
-
-            // look at response payload
-            // if file, if string, etc
-
-//            String inputLine, outputLine;
-//            KnockKnockProtocol kkp = new KnockKnockProtocol();
-//            outputLine = kkp.processInput(null);
-//            out.println(outputLine);
-
-//            while ((inputLine = in.readLine()) != null) {
-//                outputLine = kkp.processInput(inputLine);
-//                out.println(outputLine);
-//                if (outputLine.equals("Bye"))
-//                    break;
-//            }
-
+        } finally {
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    private void processRequest() throws SendHttpResponseException {
+    private void handleSpecialRequests() throws SendHttpResponseException {
         switch (request.getPath()) {
             case "/shutdown":
                 HttpServer.stop();
                 return;
             case "/control":
                 controlPage();
-                return;
-            default:
-                setPath();
-                getItem();
         }
     }
 

@@ -1,16 +1,35 @@
 package edu.upenn.cis.cis455.webserver;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 class HttpRequest {
     private boolean ok = true;
     private HttpMethod method;
     private String path;
     private HttpVersion version;
 
+    public HttpRequest(BufferedReader in) throws IOException {
+        String[] first = in.readLine().split("\\s+");
+
+        if (first.length < 3) {
+            markAsBad();
+        }
+
+        try {
+            setMethod(first[0]);
+            path = first[1];
+            setVersion(first[2]);
+        } catch (IllegalArgumentException e) {
+            markAsBad();
+        }
+    }
+
     public HttpMethod getMethod() {
         return method;
     }
 
-    void setMethod(String method) throws IllegalArgumentException {
+    private void setMethod(String method) throws IllegalArgumentException {
             this.method = HttpMethod.valueOf(method);
     }
 
@@ -18,11 +37,7 @@ class HttpRequest {
         return path;
     }
 
-    void setPath(String path) {
-        this.path = path;
-    }
-
-    void markAsBad() {
+    private void markAsBad() {
         ok = false;
     }
 
@@ -30,7 +45,7 @@ class HttpRequest {
         return ok;
     }
 
-    void setVersion(String version) throws IllegalArgumentException {
+    private void setVersion(String version) throws IllegalArgumentException {
         switch (version) {
             case "HTTP/1.0":
                 this.version = HttpVersion.ONE_0;

@@ -1,5 +1,6 @@
 package edu.upenn.cis.cis455.webserver;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
@@ -8,9 +9,17 @@ class HttpResponse {
     private HttpStatus status;
     private HttpResponsePayload payload;
 
-    public HttpResponse(HttpRequest req) {
+    private HttpResponse(HttpRequest req) {
         this.status = HttpStatus.OK;
         this.version = req.getVersion();
+    }
+
+    static HttpResponse createPartialResponse(HttpRequest request) throws SendHttpResponseException {
+        HttpResponse response = new HttpResponse(request);
+        if (!request.isOk()) {
+            response.error(HttpStatus.BAD_REQUEST).send();
+        }
+        return response;
     }
 
     void setPayload(String payload) {
@@ -30,14 +39,14 @@ class HttpResponse {
         throw new SendHttpResponseException();
     }
 
-    void sendOverSocket(OutputStream binaryOut, PrintWriter out) {
+    void sendOverSocket(OutputStream binaryOut, PrintWriter out) throws IOException {
         out.println(getStatusLine());
         out.println();
         if (payload instanceof StringPayload) {
             out.print(((StringPayload) payload).getPayload());
         } else {
             // payload instanceof BinaryPayload
-            binaryOut.write(payload);
+            binaryOut.write(((BinaryPayload) payload).getPayload());
         }
     }
 
