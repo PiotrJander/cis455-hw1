@@ -29,10 +29,6 @@ class HttpRequest {
         }
     }
 
-    public HttpMethod getMethod() {
-        return method;
-    }
-
     private void setMethod(String method) throws IllegalArgumentException {
             this.method = HttpMethod.valueOf(method);
     }
@@ -70,7 +66,7 @@ class HttpRequest {
 enum HttpMethod {
     GET,
     HEAD,
-    POST;
+    POST
 }
 
 enum HttpVersion {

@@ -4,14 +4,14 @@ import java.util.LinkedList;
 
 class BlockingQueue<E> {
     private LinkedList<E> queue = new LinkedList<>();
-    private final int MAX_SIZE;
+    private int maxSize;
 
     BlockingQueue(int max_size) {
-        this.MAX_SIZE = max_size;
+        this.maxSize = max_size;
     }
 
     synchronized void put(E elem) throws InterruptedException {
-        while (queue.size() == MAX_SIZE) {
+        while (queue.size() == maxSize) {
             wait();
         }
         if (queue.size() == 0) {
@@ -25,7 +25,7 @@ class BlockingQueue<E> {
         while (queue.size() == 0) {
             wait();
         }
-        if (queue.size() == MAX_SIZE) {
+        if (queue.size() == maxSize) {
             notifyAll();
         }
 

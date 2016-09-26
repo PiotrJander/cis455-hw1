@@ -44,7 +44,7 @@ class Task {
         }
     }
 
-    private void handleSpecialRequests() throws SendHttpResponseException {
+    private void handleSpecialRequests() {
         switch (request.getPath()) {
             case "/shutdown":
                 HttpServer.stop();
