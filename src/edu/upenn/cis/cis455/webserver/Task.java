@@ -24,19 +24,22 @@ class Task {
                     new InputStreamReader(
                             socket.getInputStream()))
         ) {
-            request = new HttpRequest(in);
-
-            try {
-                response = HttpResponse.createPartialResponse(request);
-                handleSpecialRequests();
-                setPath();
-                getItem();
-                response.send();
-            } catch (SendHttpResponseException e) {
-                response.sendOverSocket(binaryOut, out);
-            }
+            processRequest(binaryOut, out, in);
         } finally {
             socket.close();
+        }
+    }
+
+    private void processRequest(OutputStream binaryOut, PrintWriter out, BufferedReader in) throws IOException {
+        try {
+            request = new HttpRequest(in);
+            response = HttpResponse.createPartialResponse(request);
+            handleSpecialRequests();
+            setPath();
+            getItem();
+            response.send();
+        } catch (SendHttpResponseException e) {
+            response.sendOverSocket(binaryOut, out);
         }
     }
 
@@ -47,29 +50,6 @@ class Task {
                 return;
             case "/control":
                 controlPage();
-        }
-    }
-
-    private void getItem() throws SendHttpResponseException {
-        if (Files.isDirectory(filePath)) {
-            getFile();
-        } else if (Files.isRegularFile(filePath)) {
-            getDirectoryListing();
-        } else {
-            // file doesn't exist
-            response.error(HttpStatus.NOT_FOUND).send();
-        }
-    }
-
-    private void getDirectoryListing() {
-        throw new UnsupportedOperationException();
-    }
-
-    private void getFile() throws SendHttpResponseException {
-        try {
-            response.setPayload(Files.readAllBytes(filePath));
-        } catch (IOException e) {
-            response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
         }
     }
 
@@ -87,5 +67,28 @@ class Task {
         } catch (IllegalArgumentException | IOException e) {
             response.error(HttpStatus.BAD_REQUEST).send();
         }
+    }
+
+    private void getItem() throws SendHttpResponseException {
+        if (Files.isDirectory(filePath)) {
+            getFile();
+        } else if (Files.isRegularFile(filePath)) {
+            getDirectoryListing();
+        } else {
+            // file doesn't exist
+            response.error(HttpStatus.NOT_FOUND).send();
+        }
+    }
+
+    private void getFile() throws SendHttpResponseException {
+        try {
+            response.setPayload(Files.readAllBytes(filePath));
+        } catch (IOException e) {
+            response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        }
+    }
+
+    private void getDirectoryListing() {
+        throw new UnsupportedOperationException();
     }
 }
