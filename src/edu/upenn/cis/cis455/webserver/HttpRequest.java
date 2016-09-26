@@ -7,19 +7,23 @@ class HttpRequest {
     private boolean ok = true;
     private HttpMethod method;
     private String path;
-    private HttpVersion version;
+    private HttpVersion version = HttpVersion.ONE_1;
 
-    public HttpRequest(BufferedReader in) throws IOException {
+    HttpRequest(BufferedReader in) throws IOException {
         String[] first = in.readLine().split("\\s+");
 
-        if (first.length < 3) {
+        if (first.length < 2) {
             markAsBad();
+            return;
         }
 
         try {
             setMethod(first[0]);
             path = first[1];
-            setVersion(first[2]);
+
+            if (first.length >= 3) {
+                setVersion(first[2]);
+            }
         } catch (IllegalArgumentException e) {
             markAsBad();
         }

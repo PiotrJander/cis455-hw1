@@ -33,7 +33,8 @@ class Task {
     private void processRequest(OutputStream binaryOut, PrintWriter out, BufferedReader in) throws IOException {
         try {
             request = new HttpRequest(in);
-            response = HttpResponse.createPartialResponse(request);
+            response = new HttpResponse(request);
+            response.checkForBadRequest(request);
             handleSpecialRequests();
             setPath();
             getItem();
@@ -60,6 +61,7 @@ class Task {
     private void setPath() throws SendHttpResponseException {
         Path root = HttpServer.getRootDirectory();
         try {
+            // TODO how come path is good here? no need to strip the leading slash?
             filePath = root.resolve(request.getPath()).toRealPath(LinkOption.NOFOLLOW_LINKS);
             if (!filePath.startsWith(root)) {
                 throw new IllegalArgumentException();
@@ -71,9 +73,9 @@ class Task {
 
     private void getItem() throws SendHttpResponseException {
         if (Files.isDirectory(filePath)) {
-            getFile();
-        } else if (Files.isRegularFile(filePath)) {
             getDirectoryListing();
+        } else if (Files.isRegularFile(filePath)) {
+            getFile();
         } else {
             // file doesn't exist
             response.error(HttpStatus.NOT_FOUND).send();

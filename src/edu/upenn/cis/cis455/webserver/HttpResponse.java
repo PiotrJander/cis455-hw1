@@ -9,17 +9,15 @@ class HttpResponse {
     private HttpStatus status;
     private HttpResponsePayload payload;
 
-    private HttpResponse(HttpRequest req) {
+    HttpResponse(HttpRequest req) {
         this.status = HttpStatus.OK;
         this.version = req.getVersion();
     }
 
-    static HttpResponse createPartialResponse(HttpRequest request) throws SendHttpResponseException {
-        HttpResponse response = new HttpResponse(request);
+    void checkForBadRequest(HttpRequest request) throws SendHttpResponseException {
         if (!request.isOk()) {
-            response.error(HttpStatus.BAD_REQUEST).send();
+            error(HttpStatus.BAD_REQUEST).send();
         }
-        return response;
     }
 
     void setPayload(String payload) {
@@ -44,8 +42,7 @@ class HttpResponse {
         out.println();
         if (payload instanceof StringPayload) {
             out.print(((StringPayload) payload).getPayload());
-        } else {
-            // payload instanceof BinaryPayload
+        } else if (payload instanceof BinaryPayload) {
             binaryOut.write(((BinaryPayload) payload).getPayload());
         }
     }

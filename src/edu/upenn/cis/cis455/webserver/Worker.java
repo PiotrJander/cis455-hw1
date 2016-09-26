@@ -1,5 +1,7 @@
 package edu.upenn.cis.cis455.webserver;
 
+import java.io.IOException;
+
 class Worker implements Runnable {
     private BlockingQueue<TcpRequest> queue;
     private int id;
@@ -17,6 +19,8 @@ class Worker implements Runnable {
             } catch (InterruptedException e) {
                 // the worker was interrupted; stop
                 return;
+            } catch (IOException e) {
+                // TODO log here
             }
         }
     }

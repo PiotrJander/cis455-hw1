@@ -1,5 +1,6 @@
 package edu.upenn.cis.cis455.webserver;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class HttpServer {
 
 	public static void main(String args[]) throws InterruptedException
 	{
+        BasicConfigurator.configure();
 		log.info("Start of Http Server");
 
         parseArguments(args);
@@ -37,7 +39,7 @@ public class HttpServer {
         try {
             portNumber = Integer.parseInt(args[0]);
             rootDirectory = Paths.get(args[1]);
-        } catch (NumberFormatException | InvalidPathException e) {
+        } catch (NumberFormatException | InvalidPathException | ArrayIndexOutOfBoundsException e) {
             handleInvalidArguments();
         }
     }
