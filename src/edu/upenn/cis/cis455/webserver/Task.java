@@ -11,13 +11,16 @@ import java.nio.file.Path;
 class Task {
     private static Logger log = Logger.getLogger(Task.class);
 
+    private Worker worker;
+
     private Socket socket;
     private HttpRequest request;
     private HttpResponse response;
     private Path filePath;
 
-    Task(TcpRequest tcpRequest) {
+    Task(TcpRequest tcpRequest, Worker worker) {
         this.socket = tcpRequest.getSocket();
+        this.worker = worker;
     }
 
     void run() throws IOException {
@@ -38,6 +41,7 @@ class Task {
     private void processRequest(OutputStream binaryOut, PrintWriter out, BufferedReader in) throws IOException {
         try {
             request = new HttpRequest(in);
+            worker.setCurrentRequestPath(request.getPath());
             response = new HttpResponse(request);
             response.checkForBadRequest(request);
             handleSpecialRequests();
@@ -49,18 +53,28 @@ class Task {
         }
     }
 
-    private void handleSpecialRequests() {
+    private void handleSpecialRequests() throws SendHttpResponseException {
         switch (request.getPath()) {
             case "/shutdown":
+                log.warn("Shutdown message received");
                 HttpServer.stop();
-                return;
+                response.send();
             case "/control":
                 controlPage();
+                response.send();
         }
     }
 
     private void controlPage() {
-        throw new UnsupportedOperationException();
+        HtmlTemplate html = new HtmlTemplate("Control Panel", "<h1>Control Panel</p>");
+        html.appendToBody("<p>Piotr Jander<br> piotr@sas.upenn.edu</p>");
+        html.appendToBody("<h2>Thread pool</h2>" + "<dl>");
+        for (Worker worker : HttpServer.getWorkersPool()) {
+            html.appendToBody("<dt>" + worker.getWorkerId() + "</dt>");
+            html.appendToBody("<dd>" + worker.getCurrentRequestPath() + "</dd>");
+        }
+        html.appendToBody("</dl>");
+        html.appendToBody("<button><a href='/shutdown'>Shutdown server</a></button>");
     }
 
     private void setPath() throws SendHttpResponseException {

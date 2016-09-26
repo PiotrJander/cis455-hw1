@@ -19,7 +19,9 @@ public class HttpServer {
     private static BlockingQueue<TcpRequest> queue = new BlockingQueue<>(QUEUE_SIZE);
 
     private final static int WORKERS_POOL_SIZE = 10;
-    private static Thread[] workersPool = new Thread[WORKERS_POOL_SIZE];
+    private static Worker[] workersPool = new Worker[WORKERS_POOL_SIZE];
+
+    private static final Thread mainThread = Thread.currentThread();
 
     private static volatile boolean running = true;
 
@@ -53,12 +55,12 @@ public class HttpServer {
     private static void startWorkersPool() {
         log.info("Starting workers pool");
         for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
-            workersPool[i] = new Thread(new Worker(queue, i));
+            workersPool[i] = new Worker(queue, i);
             workersPool[i].start();
         }
     }
 
-    private static void startDaemon() throws InterruptedException {
+    private static void startDaemon() {
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
             log.info("Listening on port " + portNumber);
             while (running) {
@@ -71,13 +73,16 @@ public class HttpServer {
         } catch (IllegalArgumentException e) {
             // port number out of range
             handleInvalidArguments();
+        } catch (InterruptedException e) {
+            log.warn("Daemon interrupted");
+            stopWorkers();
         }
     }
 
     static void stop() {
         log.info("Stopping the server");
         running = false;
-        stopWorkers();
+        mainThread.interrupt();
     }
 
     private static void stopWorkers() {
@@ -88,7 +93,7 @@ public class HttpServer {
             try {
                 worker.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                log.warn("Thread " + worker.getId() + " threw InterruptedException");
             }
         }
         log.info("All workers stopped");
@@ -96,6 +101,10 @@ public class HttpServer {
 
     static Path getRootDirectory() {
         return rootDirectory;
+    }
+
+    static Worker[] getWorkersPool() {
+        return workersPool;
     }
 
 }
