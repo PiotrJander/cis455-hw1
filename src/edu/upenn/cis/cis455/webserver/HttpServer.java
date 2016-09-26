@@ -51,6 +51,7 @@ public class HttpServer {
     }
 
     private static void startWorkersPool() {
+        log.info("Starting workers pool");
         for (int i = 0; i < WORKERS_POOL_SIZE; i++) {
             workersPool[i] = new Thread(new Worker(queue, i));
             workersPool[i].start();
@@ -59,9 +60,11 @@ public class HttpServer {
 
     private static void startDaemon() throws InterruptedException {
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+            log.info("Listening on port " + portNumber);
             while (running) {
                 TcpRequest tcpRequest = new TcpRequest(serverSocket.accept());
                 queue.put(tcpRequest);
+                log.info("New request added to the queue");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,6 +75,7 @@ public class HttpServer {
     }
 
     static void stop() {
+        log.info("Stopping the server");
         running = false;
         stopWorkers();
     }
@@ -87,6 +91,7 @@ public class HttpServer {
                 e.printStackTrace();
             }
         }
+        log.info("All workers stopped");
     }
 
     static Path getRootDirectory() {

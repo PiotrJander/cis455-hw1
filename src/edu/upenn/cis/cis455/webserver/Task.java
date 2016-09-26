@@ -1,5 +1,7 @@
 package edu.upenn.cis.cis455.webserver;
 
+import org.apache.log4j.Logger;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -7,6 +9,8 @@ import java.nio.file.LinkOption;
 import java.nio.file.Path;
 
 class Task {
+    private static Logger log = Logger.getLogger(Task.class);
+
     private Socket socket;
     private HttpRequest request;
     private HttpResponse response;
@@ -24,6 +28,7 @@ class Task {
                     new InputStreamReader(
                             socket.getInputStream()))
         ) {
+            log.info("Processing request starts");
             processRequest(binaryOut, out, in);
         } finally {
             socket.close();
@@ -62,7 +67,7 @@ class Task {
         Path root = HttpServer.getRootDirectory();
         try {
             // TODO how come path is good here? no need to strip the leading slash?
-            filePath = root.resolve(request.getPath()).toRealPath(LinkOption.NOFOLLOW_LINKS);
+            filePath = root.resolve(request.getPath().substring(1)).toRealPath(LinkOption.NOFOLLOW_LINKS);
             if (!filePath.startsWith(root)) {
                 throw new IllegalArgumentException();
             }
@@ -91,6 +96,15 @@ class Task {
     }
 
     private void getDirectoryListing() {
-        throw new UnsupportedOperationException();
+        File directory = filePath.toFile();
+        File[] files = directory.listFiles();
+        HtmlTemplate html = new HtmlTemplate(filePath.toString(), "<ol>");
+        if (files != null) {
+            for (File file : files) {
+                html.appendToBody("<li>" + file.getName() + "</li>");
+            }
+        }
+        html.appendToBody("</ol>\n");
+        response.setPayload(html.toHtml());
     }
 }

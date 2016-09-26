@@ -41,7 +41,7 @@ class HttpResponse {
         out.println(getStatusLine());
         out.println();
         if (payload instanceof StringPayload) {
-            out.print(((StringPayload) payload).getPayload());
+            out.println(((StringPayload) payload).getPayload());
         } else if (payload instanceof BinaryPayload) {
             binaryOut.write(((BinaryPayload) payload).getPayload());
         }

@@ -1,8 +1,12 @@
 package edu.upenn.cis.cis455.webserver;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 
 class Worker implements Runnable {
+    private static Logger log = Logger.getLogger(Worker.class);
+
     private BlockingQueue<TcpRequest> queue;
     private int id;
 
@@ -15,12 +19,15 @@ class Worker implements Runnable {
     public void run() {
         while (true) {
             try {
-                (new Task(queue.take())).run();
+                Task task = new Task(queue.take());
+                log.info("Task was taken from the queue");
+                task.run();
             } catch (InterruptedException e) {
                 // the worker was interrupted; stop
+                log.info("Stopping worker " + id);
                 return;
             } catch (IOException e) {
-                // TODO log here
+                log.error("A task threw IOException");
             }
         }
     }
