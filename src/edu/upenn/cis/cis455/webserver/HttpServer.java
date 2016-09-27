@@ -3,8 +3,6 @@ package edu.upenn.cis.cis455.webserver;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,12 +16,10 @@ public class HttpServer {
     private static final int QUEUE_SIZE = 10;
     private static BlockingQueue<TcpRequest> queue = new BlockingQueue<>(QUEUE_SIZE);
 
+    private static Thread daemon;
+
     private final static int WORKERS_POOL_SIZE = 10;
     private static Worker[] workersPool = new Worker[WORKERS_POOL_SIZE];
-
-    private static final Thread mainThread = Thread.currentThread();
-
-    private static volatile boolean running = true;
 
 	public static void main(String args[]) throws InterruptedException
 	{
@@ -31,10 +27,9 @@ public class HttpServer {
 		log.info("Start of Http Server");
 
         parseArguments(args);
-        startWorkersPool();
-        startDaemon();
 
-        log.info("Http Server terminating");
+        startDaemon();
+        startWorkersPool();
 	}
 
     private static void parseArguments(String[] args) {
@@ -46,10 +41,15 @@ public class HttpServer {
         }
     }
 
-    private static void handleInvalidArguments() {
+    static void handleInvalidArguments() {
         System.out.println("Piotr Jander");
         System.out.println("piotr@sas.upenn.edu");
         System.exit(0);
+    }
+
+    private static void startDaemon() {
+        daemon = new Daemon(portNumber, queue);
+        daemon.start();
     }
 
     private static void startWorkersPool() {
@@ -60,41 +60,31 @@ public class HttpServer {
         }
     }
 
-    private static void startDaemon() {
-        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            log.info("Listening on port " + portNumber);
-            while (running) {
-                TcpRequest tcpRequest = new TcpRequest(serverSocket.accept());
-                queue.put(tcpRequest);
-                log.info("New request added to the queue");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // port number out of range
-            handleInvalidArguments();
+    static void stop() {
+        log.info("Stopping the server");
+
+        daemon.interrupt();
+        interruptWorkers();
+
+        try {
+            daemon.join();
+            workersJoin();
         } catch (InterruptedException e) {
-            log.warn("Daemon interrupted");
-            stopWorkers();
+            e.printStackTrace();
+        } finally {
+            log.info("Http Server terminating");
         }
     }
 
-    static void stop() {
-        log.info("Stopping the server");
-        running = false;
-        mainThread.interrupt();
-    }
-
-    private static void stopWorkers() {
+    private static void interruptWorkers() {
         for (Thread worker : workersPool) {
             worker.interrupt();
         }
+    }
+
+    private static void workersJoin() throws InterruptedException {
         for (Thread worker : workersPool) {
-            try {
-                worker.join();
-            } catch (InterruptedException e) {
-                log.warn("Thread " + worker.getId() + " threw InterruptedException");
-            }
+            worker.join();
         }
         log.info("All workers stopped");
     }
