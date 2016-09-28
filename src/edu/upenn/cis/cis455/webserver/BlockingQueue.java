@@ -10,9 +10,10 @@ class BlockingQueue<E> {
         this.maxSize = max_size;
     }
 
-    synchronized void put(E elem) throws InterruptedException {
-        while (queue.size() == maxSize) {
-            wait();
+    synchronized void put(E elem) {
+        if (queue.size() == maxSize) {
+            // discard overflow request
+            return;
         }
         if (queue.size() == 0) {
             notifyAll();

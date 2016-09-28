@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,7 +24,7 @@ public class HttpServer {
 
     private static final Thread mainThread = Thread.currentThread();
 
-    private static volatile boolean running = true;
+    private static ServerSocket serverSocket;
 
 	public static void main(String args[]) throws InterruptedException
 	{
@@ -32,7 +33,7 @@ public class HttpServer {
 
         parseArguments(args);
         startWorkersPool();
-        startDaemon();
+        runDaemon();
 
         log.info("Http Server terminating");
 	}
@@ -60,40 +61,46 @@ public class HttpServer {
         }
     }
 
-    private static void startDaemon() {
+    private static void runDaemon() {
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
+            HttpServer.serverSocket = serverSocket;
             log.info("Listening on port " + portNumber);
-            while (running) {
-                TcpRequest tcpRequest = new TcpRequest(serverSocket.accept());
+            TcpRequest tcpRequest;
+            //noinspection InfiniteLoopStatement
+            while (true) {
+                tcpRequest = new TcpRequest(serverSocket.accept());
                 queue.put(tcpRequest);
                 log.info("New request added to the queue");
             }
+        } catch (SocketException e) {
+            stopWorkers();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
             // port number out of range
             handleInvalidArguments();
-        } catch (InterruptedException e) {
-            log.warn("Daemon interrupted");
-            stopWorkers();
         }
     }
 
     static void stop() {
         log.info("Stopping the server");
-        running = false;
-        mainThread.interrupt();
+
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void stopWorkers() {
-        for (Thread worker : workersPool) {
+        for (Worker worker : workersPool) {
             worker.interrupt();
         }
-        for (Thread worker : workersPool) {
+        for (Worker worker : workersPool) {
             try {
                 worker.join();
             } catch (InterruptedException e) {
-                log.warn("Thread " + worker.getId() + " threw InterruptedException");
+                log.warn("Thread " + worker.getWorkerId() + " threw InterruptedException");
             }
         }
         log.info("All workers stopped");

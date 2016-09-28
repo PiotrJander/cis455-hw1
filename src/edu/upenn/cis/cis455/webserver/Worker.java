@@ -8,13 +8,13 @@ class Worker extends Thread {
     private static Logger log = Logger.getLogger(Worker.class);
 
     private BlockingQueue<TcpRequest> queue;
-    private int id;
+    private int workerId;
 
     private String currentRequestPath;
 
-    Worker(BlockingQueue<TcpRequest> queue, int id) {
+    Worker(BlockingQueue<TcpRequest> queue, int workerId) {
         this.queue = queue;
-        this.id = id;
+        this.workerId = workerId;
     }
 
     @Override
@@ -27,7 +27,7 @@ class Worker extends Thread {
                 currentRequestPath = null;
             } catch (InterruptedException e) {
                 // the worker was interrupted; stop
-                log.info("Stopping worker " + id);
+                log.info("Stopping worker " + workerId);
                 return;
             } catch (IOException e) {
                 log.error("A task threw IOException");
@@ -36,14 +36,14 @@ class Worker extends Thread {
     }
 
     int getWorkerId() {
-        return id;
+        return workerId;
     }
 
     void setCurrentRequestPath(String currentRequestPath) {
         this.currentRequestPath = currentRequestPath;
     }
 
-    public String getCurrentRequestPath() {
+    String getCurrentRequestPath() {
         return currentRequestPath;
     }
 }
