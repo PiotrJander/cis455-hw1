@@ -8,8 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
 
 class Task {
     private static Logger log = Logger.getLogger(Task.class);

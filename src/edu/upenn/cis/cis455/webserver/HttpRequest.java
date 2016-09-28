@@ -2,7 +2,10 @@ package edu.upenn.cis.cis455.webserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +17,7 @@ class HttpRequest {
     private HttpMethod method;
     private String path;
     private HttpVersion version = HttpVersion.ONE_1;
+
     private HashMap<String, String> httpHeaders = new HashMap<>();
 
     HttpRequest(BufferedReader in) throws IOException {
@@ -21,15 +25,46 @@ class HttpRequest {
     }
 
     void parse() throws IOException {
-        parseFirstLine(in.readLine());
-        parseHeaders(in);
+        parseFirstLine();
+        parseHeaders();
+
+        if (version == HttpVersion.ONE_1) {
+            checkHost();
+            normalizePath();
+        }
     }
 
-    private void parseHeaders(BufferedReader in) throws IOException {
+    /**
+     * If HTTP version is 1.1, checks that the Host header is present
+     */
+    private void checkHost() {
+        String host = getHeaderValue("Host");
+        if (host == null) {
+            markAsBad();
+        }
+    }
+
+    private void normalizePath() {
+        try {
+            URL url = new URL(path);
+            String host = getHeaderValue("Host");
+            if (!Objects.equals(url.getHost(), host)) {
+                markAsBad();
+            }
+            path = url.getPath();
+        } catch (MalformedURLException ignore) {
+            // 'path' is a path, no action required
+        }
+    }
+
+    /**
+     * Syntax not semantics here.
+     */
+    void parseHeaders() throws IOException {
         String line;
-        while (!(line = in.readLine()).equals("\n")) {
+        while ((line = in.readLine()) != null && !line.equals("\n")) {
             // parse the header
-            Pattern p = Pattern.compile("(?<name>^[\\w-]):\\s+(?<value>.*)\\n");
+            Pattern p = Pattern.compile("(?<name>^[\\w-]+):\\s+(?<value>.*$)");
             Matcher m = p.matcher(line);
             if (m.matches()) {
                 String name = m.group("name");
@@ -41,8 +76,15 @@ class HttpRequest {
         }
     }
 
-    private void parseFirstLine(String firstLine) throws IOException {
-        String[] first = firstLine.split("\\s+");
+    private void parseFirstLine() throws IOException {
+        String firstLine = in.readLine();
+        String[] first;
+        if (firstLine != null) {
+            first = firstLine.split("\\s+");
+        } else {
+            markAsBad();
+            return;
+        }
 
         if (first.length < 2) {
             markAsBad();
@@ -96,6 +138,10 @@ class HttpRequest {
 
     HttpMethod getMethod() {
         return method;
+    }
+
+    String getHeaderValue(String headerName) {
+        return httpHeaders.get(headerName);
     }
 }
 
