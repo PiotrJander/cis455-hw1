@@ -13,13 +13,13 @@ class HttpRequest {
     private final BufferedReader in;
 
     private boolean ok = true;
-    private boolean serverError = true;
+    private boolean serverError = false;
 
     private String badRequestErrorMessage;
 
     private HttpMethod method;
     private String path;
-    private HttpVersion version = HttpVersion.ONE_1;
+    private HttpVersion version = HttpVersion.ONE_0;
 
     private HashMap<String, String> httpRequestHeaders = new HashMap<>();
 

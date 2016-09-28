@@ -18,7 +18,7 @@ class HttpResponse {
 
     private Map<String, String> httpResponseHeaders = new HashMap<>();
 
-    private byte[] payload;
+    private byte[] payload = new byte[0];
 
     HttpResponse(HttpRequest req) {
         this.request = req;
@@ -78,14 +78,16 @@ class HttpResponse {
 
     void sendOverSocket(OutputStream binaryOut, PrintWriter out) throws IOException {
         out.println(getStatusLine());
-        out.println();
 
         // print headers
         for (Map.Entry<String, String> e : httpResponseHeaders.entrySet()) {
             out.println(String.format("%s: %s", e.getKey(), e.getValue()));
         }
 
-        // GET requests
+        // print empty line
+        out.println();
+
+        // finish if HEAD request
         if (method == HttpMethod.HEAD) {
             return;
         }

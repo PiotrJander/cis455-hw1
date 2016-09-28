@@ -111,6 +111,8 @@
         		<path location="${build.target.dir}${file.separator}WEB-INF${file.separator}lib${file.separator}${ant.project.name}.jar"/>
             	<path location="${resources.dir}"/>
 			</classpath>
+            <arg value="8888"/>
+            <arg value="/Users/piotr/projects/cis455/hw1/www"/>
         </java>
 		<sequential>
 			<sleep milliseconds="500"/>

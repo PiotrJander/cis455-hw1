@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class Task {
     private static Logger log = Logger.getLogger(Task.class);
@@ -62,6 +64,7 @@ class Task {
             response.send();
         } catch (SendHttpResponseException e) {
             response.sendOverSocket(binaryOut, out);
+            log.info("Response sent");
         }
     }
 
@@ -124,7 +127,7 @@ class Task {
     private void getFile() throws SendHttpResponseException {
         try {
             response.setPayload(Files.readAllBytes(filePath));
-            setMimeType();
+            response.setContentType(getMimeType(String.valueOf(filePath)));
             setLastModified();
         } catch (IOException e) {
             response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
@@ -133,18 +136,35 @@ class Task {
 
     private void setLastModified() {
         File file = new File(String.valueOf(filePath));
-        Instant i = Instant.ofEpochSecond(file.lastModified());
+        Instant i = Instant.ofEpochMilli(file.lastModified());
         ZonedDateTime date = ZonedDateTime.ofInstant(i, ZoneOffset.UTC);
         response.setLastModified(date.format(DateTimeFormatter.RFC_1123_DATE_TIME));
     }
 
-    private void setMimeType() throws IOException {
-        String mime = Files.probeContentType(filePath);
-        if (mime != null) {
-            response.setContentType(mime);
-        } else {
-            response.setContentType("application/octet-stream");
+    static String getMimeType(String filePath) throws IOException {
+        Pattern p = Pattern.compile(".*\\.(?<ext>\\w+$)");
+        Matcher m = p.matcher(String.valueOf(filePath));
+        if (m.matches()) {
+            String extension = m.group("ext");
+            switch (extension) {
+                case "txt":
+                    return "text/plain";
+                case "html":
+                    return "text/html";
+                case "jpg":
+                    return "image/jpeg";
+                case "jpeg":
+                    return "image/jpeg";
+                case "png":
+                    return "image/png";
+                case "gif":
+                    return "image/gif";
+                default:
+                    return "application/octet-stream";
+            }
         }
+
+        return "application/octet-stream";
     }
 
     private void getDirectoryListing() {
