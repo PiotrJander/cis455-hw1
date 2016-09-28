@@ -153,6 +153,10 @@ class HttpRequest {
     String getBadRequestErrorMessage() {
         return badRequestErrorMessage;
     }
+
+    boolean continueExpected() {
+        return Objects.equals(httpRequestHeaders.get("Expect"), "100-continue");
+    }
 }
 
 class BadRequestException extends Exception {

@@ -3,11 +3,11 @@ package edu.upenn.cis.cis455.webserver;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Map;
 
 class HttpResponse {
     private HttpRequest request;
@@ -16,9 +16,9 @@ class HttpResponse {
     private HttpVersion version;
     private HttpStatus status;
 
-    private HashMap<String, String> httpResponseHeaders = new HashMap<>();
+    private Map<String, String> httpResponseHeaders = new HashMap<>();
 
-    private HttpResponsePayload payload;
+    private byte[] payload;
 
     HttpResponse(HttpRequest req) {
         this.request = req;
@@ -48,12 +48,23 @@ class HttpResponse {
         httpResponseHeaders.put(name, value);
     }
 
+    void setContentType(String type) {
+        addResponseHeader("Content-Type", type);
+    }
+
+    void setLastModified(String time) {
+        addResponseHeader("Last-Modified", time);
+    }
+
     void setPayload(String payload) {
-        this.payload = new StringPayload(payload);
+        this.payload = payload.getBytes();
+        addResponseHeader("Content-Length", Integer.toString(this.payload.length));
+        setContentType("text/html");
     }
 
     void setPayload(byte[] payload) {
-        this.payload = new BinaryPayload(payload);
+        this.payload = payload;
+        addResponseHeader("Content-Length", Integer.toString(payload.length));
     }
 
     HttpResponse error(HttpStatus error) {
@@ -69,19 +80,23 @@ class HttpResponse {
         out.println(getStatusLine());
         out.println();
 
-        // add
-        // Last-Modified
-        // Content-Type
-        // Content-Length
+        // print headers
+        for (Map.Entry<String, String> e : httpResponseHeaders.entrySet()) {
+            out.println(String.format("%s: %s", e.getKey(), e.getValue()));
+        }
 
         // GET requests
-        if (method == HttpMethod.HEAD)  return;
-
-        if (payload instanceof StringPayload) {
-            out.println(((StringPayload) payload).getPayload());
-        } else if (payload instanceof BinaryPayload) {
-            binaryOut.write(((BinaryPayload) payload).getPayload());
+        if (method == HttpMethod.HEAD) {
+            return;
         }
+
+        binaryOut.write(payload);
+
+//        if (payload instanceof StringPayload) {
+//            out.println(((StringPayload) payload).getPayload());
+//        } else if (payload instanceof BinaryPayload) {
+//            binaryOut.write(((BinaryPayload) payload).getPayload());
+//        }
     }
 
     private String getStatusLine() {
@@ -92,32 +107,36 @@ class HttpResponse {
                 status.getName()
         );
     }
+
+    void setStatus(HttpStatus status) {
+        this.status = status;
+    }
 }
 
 class SendHttpResponseException extends Exception {}
 
-interface HttpResponsePayload {}
-
-class StringPayload implements HttpResponsePayload {
-    private String payload;
-
-    StringPayload(String payload) {
-        this.payload = payload;
-    }
-
-    String getPayload() {
-        return payload;
-    }
-}
-
-class BinaryPayload implements HttpResponsePayload {
-    private final byte[] payload;
-
-    BinaryPayload(byte[] payload) {
-        this.payload = payload;
-    }
-
-    byte[] getPayload() {
-        return payload;
-    }
-}
+//interface HttpResponsePayload {}
+//
+//class StringPayload implements HttpResponsePayload {
+//    private String payload;
+//
+//    StringPayload(String payload) {
+//        this.payload = payload;
+//    }
+//
+//    String getPayload() {
+//        return payload;
+//    }
+//}
+//
+//class BinaryPayload implements HttpResponsePayload {
+//    private final byte[] payload;
+//
+//    BinaryPayload(byte[] payload) {
+//        this.payload = payload;
+//    }
+//
+//    byte[] getPayload() {
+//        return payload;
+//    }
+//}

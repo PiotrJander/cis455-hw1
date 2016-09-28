@@ -8,6 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 class Task {
     private static Logger log = Logger.getLogger(Task.class);
@@ -43,6 +47,11 @@ class Task {
         try {
             request = new HttpRequest(in);
             request.parse();
+
+            if (request.continueExpected()) {
+                sendContinueResponse(binaryOut, out);
+            }
+
             worker.setCurrentRequestPath(request.getPath());
             response = new HttpResponse(request);
             response.initializeHeaders();
@@ -54,6 +63,11 @@ class Task {
         } catch (SendHttpResponseException e) {
             response.sendOverSocket(binaryOut, out);
         }
+    }
+
+    private void sendContinueResponse(OutputStream binaryOut, PrintWriter out) throws IOException {
+        HttpContinueResponse continueResponse = new HttpContinueResponse(request);
+        continueResponse.sendOverSocket(binaryOut, out);
     }
 
     private void handleSpecialRequests() throws SendHttpResponseException {
@@ -110,8 +124,26 @@ class Task {
     private void getFile() throws SendHttpResponseException {
         try {
             response.setPayload(Files.readAllBytes(filePath));
+            setMimeType();
+            setLastModified();
         } catch (IOException e) {
             response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        }
+    }
+
+    private void setLastModified() {
+        File file = new File(String.valueOf(filePath));
+        Instant i = Instant.ofEpochSecond(file.lastModified());
+        ZonedDateTime date = ZonedDateTime.ofInstant(i, ZoneOffset.UTC);
+        response.setLastModified(date.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+    }
+
+    private void setMimeType() throws IOException {
+        String mime = Files.probeContentType(filePath);
+        if (mime != null) {
+            response.setContentType(mime);
+        } else {
+            response.setContentType("application/octet-stream");
         }
     }
 
