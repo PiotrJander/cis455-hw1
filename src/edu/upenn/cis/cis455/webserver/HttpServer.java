@@ -22,8 +22,6 @@ public class HttpServer {
     private final static int WORKERS_POOL_SIZE = 10;
     private static Worker[] workersPool = new Worker[WORKERS_POOL_SIZE];
 
-    private static final Thread mainThread = Thread.currentThread();
-
     private static ServerSocket serverSocket;
 
 	public static void main(String args[]) throws InterruptedException

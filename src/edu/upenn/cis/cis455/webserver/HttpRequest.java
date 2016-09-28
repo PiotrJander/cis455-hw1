@@ -61,6 +61,10 @@ class HttpRequest {
     HttpVersion getVersion() {
         return version;
     }
+
+    HttpMethod getMethod() {
+        return method;
+    }
 }
 
 enum HttpMethod {

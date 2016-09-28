@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 
 class HttpResponse {
+    private HttpMethod method;
     private HttpVersion version;
     private HttpStatus status;
     private HttpResponsePayload payload;
@@ -12,6 +13,7 @@ class HttpResponse {
     HttpResponse(HttpRequest req) {
         this.status = HttpStatus.OK;
         this.version = req.getVersion();
+        this.method = req.getMethod();
     }
 
     void checkForBadRequest(HttpRequest request) throws SendHttpResponseException {
@@ -40,6 +42,10 @@ class HttpResponse {
     void sendOverSocket(OutputStream binaryOut, PrintWriter out) throws IOException {
         out.println(getStatusLine());
         out.println();
+
+        // GET requests
+        if (method == HttpMethod.HEAD)  return;
+
         if (payload instanceof StringPayload) {
             out.println(((StringPayload) payload).getPayload());
         } else if (payload instanceof BinaryPayload) {
@@ -74,7 +80,7 @@ class StringPayload implements HttpResponsePayload {
 }
 
 class BinaryPayload implements HttpResponsePayload {
-    private byte[] payload;
+    private final byte[] payload;
 
     BinaryPayload(byte[] payload) {
         this.payload = payload;
