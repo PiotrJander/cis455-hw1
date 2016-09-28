@@ -1,13 +1,12 @@
 package edu.upenn.cis.cis455.webserver;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
 import static org.junit.Assert.*;
 
-public class TaskTest {
+public class TaskTest extends TestCase {
 
-    @Test
-    public void mime() throws Exception {
+    public void testMime() throws Exception {
         assertEquals("text/html", Task.getMimeType("foo.html"));
     }
 

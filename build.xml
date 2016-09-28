@@ -16,7 +16,7 @@
     <property name="resources.dir" location="${build.dir}${file.separator}resources"/>
     <property name="conf.dir"      location="${build.dir}${file.separator}conf"/>
     <property name="main-class"      value="edu.upenn.cis.cis455.webserver.HttpServer"/>
-    <path workerId="classpath">
+    <path id="classpath">
         <fileset dir="${inputlib.dir}" includes="**/*.jar"/>
     </path>
 	

@@ -1,15 +1,12 @@
 package edu.upenn.cis.cis455.webserver;
 
-import org.junit.Test;
+import junit.framework.TestCase;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 
-import static org.junit.Assert.*;
-
-public class HttpRequestTest {
-    @Test
-    public void parseHeaders() throws Exception {
+public class HttpRequestTest extends TestCase {
+    public void testParseHeaders() throws Exception {
         String headers =
                 "Host: www.example.com\n"
                 + "User-Agent: Firefox/1.1.1\n"
@@ -23,8 +20,7 @@ public class HttpRequestTest {
         assertEquals(req.getHeaderValue("foo"), null);
     }
 
-    @Test
-    public void noHost() throws Exception {
+    public void testNoHost() throws Exception {
         String raw =
                 "GET /foo HTTP/1.1\n"
                 + "\n";
@@ -35,8 +31,7 @@ public class HttpRequestTest {
         assertEquals("'Host' header not specified", req.getBadRequestErrorMessage());
     }
 
-    @Test
-    public void hostMismatch() throws Exception {
+    public void testHostMismatch() throws Exception {
         String raw =
                 "GET http://www.bar.com/foo HTTP/1.1\n"
                         + "Host: www.example.com\n"

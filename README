@@ -5,9 +5,12 @@ SEAS login: piotr@sas.upenn.edu
 
 Which features did you implement? 
   (list features, or write 'Entire assignment')
+  All features excluding closing idle connections,
+  If-Modified-Since, and If-Unmodified-Since.
 
 Did you complete any extra-credit tasks? If so, which ones?
   (list extra-credit tasks)
+  None
 
 Any special instructions for building and running your solution?
   (include detailed instructions, or write 'None')

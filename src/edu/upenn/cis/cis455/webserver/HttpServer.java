@@ -16,10 +16,10 @@ public class HttpServer {
     private static int portNumber;
     private static Path rootDirectory;
 
-    private static final int QUEUE_SIZE = 10;
+    private static final int QUEUE_SIZE = 1000;
     private static BlockingQueue<TcpRequest> queue = new BlockingQueue<>(QUEUE_SIZE);
 
-    private final static int WORKERS_POOL_SIZE = 10;
+    private final static int WORKERS_POOL_SIZE = 50;
     private static Worker[] workersPool = new Worker[WORKERS_POOL_SIZE];
 
     private static ServerSocket serverSocket;
