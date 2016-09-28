@@ -45,6 +45,7 @@ class Task {
             request.parse();
             worker.setCurrentRequestPath(request.getPath());
             response = new HttpResponse(request);
+            response.initializeHeaders();
             response.checkForBadRequest();
             handleSpecialRequests();
             setPath();

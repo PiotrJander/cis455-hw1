@@ -119,10 +119,6 @@ class HttpRequest {
         return path;
     }
 
-//    private void markAsBad() {
-//        ok = false;
-//    }
-
     boolean isOk() {
         return ok;
     }

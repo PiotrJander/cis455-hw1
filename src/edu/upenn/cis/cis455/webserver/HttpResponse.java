@@ -3,6 +3,10 @@ package edu.upenn.cis.cis455.webserver;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 class HttpResponse {
@@ -12,7 +16,7 @@ class HttpResponse {
     private HttpVersion version;
     private HttpStatus status;
 
-    private HashMap<String, String> httpRequestHeaders = new HashMap<>();
+    private HashMap<String, String> httpResponseHeaders = new HashMap<>();
 
     private HttpResponsePayload payload;
 
@@ -32,6 +36,16 @@ class HttpResponse {
         } else if (request.getMethod() != HttpMethod.GET && request.getMethod() != HttpMethod.HEAD) {
             error(HttpStatus.NOT_IMPLEMENTED).send();
         }
+    }
+
+    void initializeHeaders() {
+        addResponseHeader("Server", "Piotr's server");
+        addResponseHeader("Connection", "close");
+        addResponseHeader("Date", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+    }
+
+    private void addResponseHeader(String name, String value) {
+        httpResponseHeaders.put(name, value);
     }
 
     void setPayload(String payload) {
@@ -54,6 +68,11 @@ class HttpResponse {
     void sendOverSocket(OutputStream binaryOut, PrintWriter out) throws IOException {
         out.println(getStatusLine());
         out.println();
+
+        // add
+        // Last-Modified
+        // Content-Type
+        // Content-Length
 
         // GET requests
         if (method == HttpMethod.HEAD)  return;
