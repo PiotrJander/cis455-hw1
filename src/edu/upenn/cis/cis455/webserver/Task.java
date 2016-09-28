@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.List;
 
 class Task {
     private static Logger log = Logger.getLogger(Task.class);
@@ -42,6 +44,7 @@ class Task {
     private void processRequest(OutputStream binaryOut, PrintWriter out, BufferedReader in) throws IOException {
         try {
             request = new HttpRequest(in);
+            request.parse();
             worker.setCurrentRequestPath(request.getPath());
             response = new HttpResponse(request);
             response.checkForBadRequest(request);

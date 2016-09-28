@@ -7,14 +7,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class HttpRequest {
+    private final BufferedReader in;
+
     private boolean ok = true;
+
     private HttpMethod method;
     private String path;
     private HttpVersion version = HttpVersion.ONE_1;
     private HashMap<String, String> httpHeaders = new HashMap<>();
 
     HttpRequest(BufferedReader in) throws IOException {
-        parseFirstLine(in);
+        this.in = in;
+    }
+
+    void parse() throws IOException {
+        parseFirstLine(in.readLine());
         parseHeaders(in);
     }
 
@@ -34,8 +41,8 @@ class HttpRequest {
         }
     }
 
-    private void parseFirstLine(BufferedReader in) throws IOException {
-        String[] first = in.readLine().split("\\s+");
+    private void parseFirstLine(String firstLine) throws IOException {
+        String[] first = firstLine.split("\\s+");
 
         if (first.length < 2) {
             markAsBad();

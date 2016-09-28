@@ -39,6 +39,9 @@ class Worker extends Thread {
         return workerId;
     }
 
+    /**
+     * This is so that the worker's job can be dislayed.
+     */
     void setCurrentRequestPath(String currentRequestPath) {
         this.currentRequestPath = currentRequestPath;
     }
