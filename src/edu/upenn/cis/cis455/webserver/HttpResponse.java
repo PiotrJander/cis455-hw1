@@ -3,22 +3,34 @@ package edu.upenn.cis.cis455.webserver;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 
 class HttpResponse {
+    private HttpRequest request;
+
     private HttpMethod method;
     private HttpVersion version;
     private HttpStatus status;
+
+    private HashMap<String, String> httpRequestHeaders = new HashMap<>();
+
     private HttpResponsePayload payload;
 
     HttpResponse(HttpRequest req) {
+        this.request = req;
+
         this.status = HttpStatus.OK;
         this.version = req.getVersion();
         this.method = req.getMethod();
     }
 
-    void checkForBadRequest(HttpRequest request) throws SendHttpResponseException {
+    void checkForBadRequest() throws SendHttpResponseException {
         if (!request.isOk()) {
             error(HttpStatus.BAD_REQUEST).send();
+        } else if (request.hasServerError()) {
+            error(HttpStatus.INTERNAL_SERVER_ERROR).send();
+        } else if (request.getMethod() != HttpMethod.GET && request.getMethod() != HttpMethod.HEAD) {
+            error(HttpStatus.NOT_IMPLEMENTED).send();
         }
     }
 

@@ -13,82 +13,48 @@ class HttpRequest {
     private final BufferedReader in;
 
     private boolean ok = true;
+    private boolean serverError = true;
+
+    private String badRequestErrorMessage;
 
     private HttpMethod method;
     private String path;
     private HttpVersion version = HttpVersion.ONE_1;
 
-    private HashMap<String, String> httpHeaders = new HashMap<>();
+    private HashMap<String, String> httpRequestHeaders = new HashMap<>();
 
     HttpRequest(BufferedReader in) throws IOException {
         this.in = in;
     }
 
     void parse() throws IOException {
-        parseFirstLine();
-        parseHeaders();
-
-        if (version == HttpVersion.ONE_1) {
-            checkHost();
-            normalizePath();
-        }
-    }
-
-    /**
-     * If HTTP version is 1.1, checks that the Host header is present
-     */
-    private void checkHost() {
-        String host = getHeaderValue("Host");
-        if (host == null) {
-            markAsBad();
-        }
-    }
-
-    private void normalizePath() {
         try {
-            URL url = new URL(path);
-            String host = getHeaderValue("Host");
-            if (!Objects.equals(url.getHost(), host)) {
-                markAsBad();
+            parseFirstLine();
+            parseHeaders();
+
+            if (version == HttpVersion.ONE_1) {
+                checkHost();
+                normalizePath();
             }
-            path = url.getPath();
-        } catch (MalformedURLException ignore) {
-            // 'path' is a path, no action required
+        } catch (IOException e) {
+            serverError = true;
+        } catch (BadRequestException e) {
+            ok = false;
+            badRequestErrorMessage = e.getErrorMessage();
         }
     }
 
-    /**
-     * Syntax not semantics here.
-     */
-    void parseHeaders() throws IOException {
-        String line;
-        while ((line = in.readLine()) != null && !line.equals("\n")) {
-            // parse the header
-            Pattern p = Pattern.compile("(?<name>^[\\w-]+):\\s+(?<value>.*$)");
-            Matcher m = p.matcher(line);
-            if (m.matches()) {
-                String name = m.group("name");
-                String value = m.group("value");
-                httpHeaders.put(name, value);
-            } else {
-                markAsBad();
-            }
-        }
-    }
-
-    private void parseFirstLine() throws IOException {
+    private void parseFirstLine() throws IOException, BadRequestException {
         String firstLine = in.readLine();
         String[] first;
         if (firstLine != null) {
             first = firstLine.split("\\s+");
         } else {
-            markAsBad();
-            return;
+            throw new BadRequestException();
         }
 
         if (first.length < 2) {
-            markAsBad();
-            return;
+            throw new BadRequestException();
         }
 
         try {
@@ -99,7 +65,49 @@ class HttpRequest {
                 setVersion(first[2]);
             }
         } catch (IllegalArgumentException e) {
-            markAsBad();
+            throw new BadRequestException();
+        }
+    }
+
+    /**
+     * Syntax not semantics here.
+     */
+    void parseHeaders() throws IOException, BadRequestException {
+        String line;
+        while ((line = in.readLine()) != null && !line.equals("")) {
+            // parse the header
+            Pattern p = Pattern.compile("(?<name>^[\\w-]+):\\s+(?<value>.*$)");
+            Matcher m = p.matcher(line);
+            if (m.matches()) {
+                String name = m.group("name");
+                String value = m.group("value");
+                httpRequestHeaders.put(name, value);
+            } else {
+                throw new BadRequestException("Invalid header " + line);
+            }
+        }
+    }
+
+    /**
+     * If HTTP version is 1.1, checks that the Host header is present
+     */
+    private void checkHost() throws BadRequestException {
+        String host = getHeaderValue("Host");
+        if (host == null) {
+            throw new BadRequestException("'Host' header not specified");
+        }
+    }
+
+    private void normalizePath() throws BadRequestException {
+        try {
+            URL url = new URL(path);
+            String host = getHeaderValue("Host");
+            if (!Objects.equals(url.getHost(), host)) {
+                throw new BadRequestException("'Host' header and the host in the URL don't agree");
+            }
+            path = url.getPath();
+        } catch (MalformedURLException ignore) {
+            // 'path' is a path, no action required
         }
     }
 
@@ -111,13 +119,15 @@ class HttpRequest {
         return path;
     }
 
-    private void markAsBad() {
-        ok = false;
-    }
+//    private void markAsBad() {
+//        ok = false;
+//    }
 
     boolean isOk() {
         return ok;
     }
+
+    boolean hasServerError() { return serverError; }
 
     private void setVersion(String version) throws IllegalArgumentException {
         switch (version) {
@@ -141,7 +151,25 @@ class HttpRequest {
     }
 
     String getHeaderValue(String headerName) {
-        return httpHeaders.get(headerName);
+        return httpRequestHeaders.get(headerName);
+    }
+
+    String getBadRequestErrorMessage() {
+        return badRequestErrorMessage;
+    }
+}
+
+class BadRequestException extends Exception {
+    private String errorMessage;
+
+    BadRequestException(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    BadRequestException() {}
+
+    String getErrorMessage() {
+        return errorMessage;
     }
 }
 

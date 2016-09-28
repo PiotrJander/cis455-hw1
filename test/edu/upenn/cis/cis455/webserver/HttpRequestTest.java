@@ -23,4 +23,28 @@ public class HttpRequestTest {
         assertEquals(req.getHeaderValue("foo"), null);
     }
 
+    @Test
+    public void noHost() throws Exception {
+        String raw =
+                "GET /foo HTTP/1.1\n"
+                + "\n";
+        BufferedReader in = new BufferedReader(new StringReader(raw));
+        HttpRequest req = new HttpRequest(in);
+        req.parse();
+        assertFalse(req.isOk());
+        assertEquals("'Host' header not specified", req.getBadRequestErrorMessage());
+    }
+
+    @Test
+    public void hostMismatch() throws Exception {
+        String raw =
+                "GET http://www.bar.com/foo HTTP/1.1\n"
+                        + "Host: www.example.com\n"
+                        + "\n";
+        BufferedReader in = new BufferedReader(new StringReader(raw));
+        HttpRequest req = new HttpRequest(in);
+        req.parse();
+        assertFalse(req.isOk());
+        assertEquals("'Host' header and the host in the URL don't agree", req.getBadRequestErrorMessage());
+    }
 }
