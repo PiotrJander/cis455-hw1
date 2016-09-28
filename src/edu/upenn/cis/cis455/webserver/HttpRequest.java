@@ -2,14 +2,39 @@ package edu.upenn.cis.cis455.webserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class HttpRequest {
     private boolean ok = true;
     private HttpMethod method;
     private String path;
     private HttpVersion version = HttpVersion.ONE_1;
+    private HashMap<String, String> httpHeaders = new HashMap<>();
 
     HttpRequest(BufferedReader in) throws IOException {
+        parseFirstLine(in);
+        parseHeaders(in);
+    }
+
+    private void parseHeaders(BufferedReader in) throws IOException {
+        String line;
+        while (!(line = in.readLine()).equals("\n")) {
+            // parse the header
+            Pattern p = Pattern.compile("(?<name>^[\\w-]):\\s+(?<value>.*)\\n");
+            Matcher m = p.matcher(line);
+            if (m.matches()) {
+                String name = m.group("name");
+                String value = m.group("value");
+                httpHeaders.put(name, value);
+            } else {
+                markAsBad();
+            }
+        }
+    }
+
+    private void parseFirstLine(BufferedReader in) throws IOException {
         String[] first = in.readLine().split("\\s+");
 
         if (first.length < 2) {
