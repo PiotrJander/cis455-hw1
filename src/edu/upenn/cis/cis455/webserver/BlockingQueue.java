@@ -26,9 +26,6 @@ class BlockingQueue<E> {
         while (queue.size() == 0) {
             wait();
         }
-        if (queue.size() == maxSize) {
-            notifyAll();
-        }
 
         return queue.remove();
     }

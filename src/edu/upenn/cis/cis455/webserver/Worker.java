@@ -19,7 +19,7 @@ class Worker extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (!Thread.interrupted()) {
             try {
                 Task task = new Task(queue.take(), this);
                 log.info("Task was taken from the queue");
