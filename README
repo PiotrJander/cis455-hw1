@@ -14,6 +14,7 @@ Did you complete any extra-credit tasks? If so, which ones?
 
 Any special instructions for building and running your solution?
   (include detailed instructions, or write 'None')
+  I hardcoded arguments in the build.xml file. These need to be changed.
 
 Did you personally write _all_ the code you are submitting
 (other than code from the course web page)?

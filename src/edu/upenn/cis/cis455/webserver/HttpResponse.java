@@ -93,12 +93,6 @@ class HttpResponse {
         }
 
         binaryOut.write(payload);
-
-//        if (payload instanceof StringPayload) {
-//            out.println(((StringPayload) payload).getPayload());
-//        } else if (payload instanceof BinaryPayload) {
-//            binaryOut.write(((BinaryPayload) payload).getPayload());
-//        }
     }
 
     private String getStatusLine() {
@@ -116,29 +110,3 @@ class HttpResponse {
 }
 
 class SendHttpResponseException extends Exception {}
-
-//interface HttpResponsePayload {}
-//
-//class StringPayload implements HttpResponsePayload {
-//    private String payload;
-//
-//    StringPayload(String payload) {
-//        this.payload = payload;
-//    }
-//
-//    String getPayload() {
-//        return payload;
-//    }
-//}
-//
-//class BinaryPayload implements HttpResponsePayload {
-//    private final byte[] payload;
-//
-//    BinaryPayload(byte[] payload) {
-//        this.payload = payload;
-//    }
-//
-//    byte[] getPayload() {
-//        return payload;
-//    }
-//}

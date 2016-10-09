@@ -112,7 +112,7 @@
             	<path location="${resources.dir}"/>
 			</classpath>
             <arg value="8080"/>
-            <arg value="/Users/piotr/projects/cis455/hw1/www"/>
+            <arg value="/media/sf_shared/hw1/www"/>
         </java>
 		<sequential>
 			<sleep milliseconds="500"/>

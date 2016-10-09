@@ -40,7 +40,7 @@ class Worker extends Thread {
     }
 
     /**
-     * This is so that the worker's job can be dislayed.
+     * This is included so that the worker's job can be displayed.
      */
     void setCurrentRequestPath(String currentRequestPath) {
         this.currentRequestPath = currentRequestPath;

@@ -106,6 +106,7 @@ class Task {
             // TODO how come path is good here? no need to strip the leading slash?
             filePath = root.resolve(request.getPath().substring(1)).toRealPath(LinkOption.NOFOLLOW_LINKS);
             if (!filePath.startsWith(root)) {
+                // TODO why this exception?
                 throw new IllegalArgumentException();
             }
         } catch (InvalidPathException | IOException e) {
@@ -127,7 +128,7 @@ class Task {
     private void getFile() throws SendHttpResponseException {
         try {
             response.setPayload(Files.readAllBytes(filePath));
-            response.setContentType(getMimeType(String.valueOf(filePath)));
+            response.setContentType(getMimeType(filePath));
             setLastModified();
         } catch (IOException e) {
             response.error(HttpStatus.INTERNAL_SERVER_ERROR).send();
@@ -141,7 +142,7 @@ class Task {
         response.setLastModified(date.format(DateTimeFormatter.RFC_1123_DATE_TIME));
     }
 
-    static String getMimeType(String filePath) throws IOException {
+    static String getMimeType(Path filePath) throws IOException {
         Pattern p = Pattern.compile(".*\\.(?<ext>\\w+$)");
         Matcher m = p.matcher(String.valueOf(filePath));
         if (m.matches()) {
