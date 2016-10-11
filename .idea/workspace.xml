@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpServerTest.java" afterPath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
+    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="Handles invalid web.xml gracefully">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
     </list>
     <ignored path="HW1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,11 +66,12 @@
           <file leaf-file-name="Application.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1515">
-                  <caret line="109" column="40" selection-start-line="109" selection-start-column="40" selection-end-line="109" selection-end-column="40" />
+                <state relative-caret-position="238">
+                  <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#4469#4470#0" expanded="true" />
+                    <element signature="e#6454#6455#0" expanded="true" />
+                    <element signature="e#6491#6492#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -148,10 +147,10 @@
         <option value="$PROJECT_DIR$/conf/web.xml" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletContext.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpServerTest.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
       </list>
     </option>
   </component>
@@ -671,7 +670,7 @@
       <workItem from="1475447944022" duration="689000" />
       <workItem from="1476052211687" duration="338000" />
       <workItem from="1476052576156" duration="403000" />
-      <workItem from="1476053175574" duration="17514000" />
+      <workItem from="1476053175574" duration="19512000" />
     </task>
     <task id="LOCAL-00001" summary="Added IntelliJ files">
       <created>1474751894616</created>
@@ -911,7 +910,14 @@
       <option name="project" value="LOCAL" />
       <updated>1476149896589</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Factors out servlet app logic from HttpServer to Application">
+      <created>1476151311914</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1476151311914</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -947,7 +953,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80188000" />
+    <option name="totallyTimeSpent" value="82186000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1018,8 +1024,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implements getDirectoryListing" />
-    <MESSAGE value="Lots of changes again" />
     <MESSAGE value="Changes to /control" />
     <MESSAGE value="Messed up with threads" />
     <MESSAGE value="Shutdown works now! Also discards overflow exceptions" />
@@ -1043,7 +1047,9 @@
     <MESSAGE value="Adds test servlets and updates web.xml. Adds a test case for loading servlets" />
     <MESSAGE value="Adds test cases to test ServletContext" />
     <MESSAGE value="Adds test cases to test ServletConfig." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds test cases to test ServletConfig." />
+    <MESSAGE value="Factors out servlet app logic from HttpServer to Application" />
+    <MESSAGE value="Handles invalid web.xml gracefully" />
+    <option name="LAST_COMMIT_MESSAGE" value="Handles invalid web.xml gracefully" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1404,14 +1410,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/conf/web.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="21" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -1444,22 +1442,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
-          <caret line="109" column="40" selection-start-line="109" selection-start-column="40" selection-end-line="109" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4469#4470#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/conf/web.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="21" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6454#6455#0" expanded="true" />
+            <element signature="e#6491#6492#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
