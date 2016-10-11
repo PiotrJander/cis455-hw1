@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="Handles invalid web.xml gracefully">
+    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" afterPath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
     </list>
     <ignored path="HW1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -66,12 +67,12 @@
           <file leaf-file-name="Application.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="238">
-                  <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
+                <state relative-caret-position="328">
+                  <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#6454#6455#0" expanded="true" />
-                    <element signature="e#6491#6492#0" expanded="true" />
+                    <element signature="e#6503#6504#0" expanded="true" />
+                    <element signature="e#6540#6541#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -147,10 +148,10 @@
         <option value="$PROJECT_DIR$/conf/web.xml" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletContext.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpServerTest.java" />
-        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
+        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
       </list>
     </option>
   </component>
@@ -394,7 +395,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.ApplicationTest.testUrlMapping">
     <configuration default="false" name="HttpRequestTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HW1" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -403,26 +404,6 @@
       <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.HttpRequestTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="HttpRequestTest.noHost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="HW1" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
-      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.HttpRequestTest" />
-      <option name="METHOD_NAME" value="noHost" />
-      <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -483,6 +464,26 @@
       <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.ApplicationTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="ApplicationTest.testUrlMapping" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HW1" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
+      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.ApplicationTest" />
+      <option name="METHOD_NAME" value="testUrlMapping" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -633,18 +634,18 @@
     <list size="6">
       <item index="0" class="java.lang.String" itemvalue="Application.Server" />
       <item index="1" class="java.lang.String" itemvalue="JUnit.HttpRequestTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.HttpRequestTest.noHost" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.TaskTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.TaskTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testUrlMapping" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.TaskTest" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.HttpRequestTest" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.HttpRequestTest.noHost" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testUrlMapping" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TaskTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.HttpRequestTest" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -670,7 +671,7 @@
       <workItem from="1475447944022" duration="689000" />
       <workItem from="1476052211687" duration="338000" />
       <workItem from="1476052576156" duration="403000" />
-      <workItem from="1476053175574" duration="19512000" />
+      <workItem from="1476053175574" duration="19941000" />
     </task>
     <task id="LOCAL-00001" summary="Added IntelliJ files">
       <created>1474751894616</created>
@@ -917,12 +918,22 @@
       <option name="project" value="LOCAL" />
       <updated>1476151311914</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Handles invalid web.xml gracefully">
+      <created>1476153521017</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1476153521017</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TestHistory">
     <history-entry file="ApplicationTest - 2016.10.10 at 22h 00m 14s.xml">
       <configuration name="ApplicationTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ApplicationTest_testUrlMapping - 2016.10.10 at 22h 52m 43s.xml">
+      <configuration name="ApplicationTest.testUrlMapping" configurationId="JUnit" />
     </history-entry>
     <history-entry file="HttpServerTest - 2016.10.10 at 21h 18m 19s.xml">
       <configuration name="HttpServerTest" configurationId="JUnit" />
@@ -948,12 +959,9 @@
     <history-entry file="HttpServerTest - 2016.10.10 at 21h 36m 04s.xml">
       <configuration name="HttpServerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServerTest_testContext - 2016.10.10 at 21h 18m 00s.xml">
-      <configuration name="HttpServerTest.testContext" configurationId="JUnit" />
-    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="82186000" />
+    <option name="totallyTimeSpent" value="82615000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1420,16 +1428,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="4" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -1458,14 +1456,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
+    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
+        <state relative-caret-position="658">
+          <caret line="55" column="103" selection-start-line="55" selection-start-column="103" selection-end-line="55" selection-end-column="103" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#6454#6455#0" expanded="true" />
-            <element signature="e#6491#6492#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6503#6504#0" expanded="true" />
+            <element signature="e#6540#6541#0" expanded="true" />
           </folding>
         </state>
       </provider>

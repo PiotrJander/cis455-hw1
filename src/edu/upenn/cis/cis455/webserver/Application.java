@@ -2,7 +2,6 @@ package edu.upenn.cis.cis455.webserver;
 
 import edu.upenn.cis.cis455.webserver.servlet.ServletConfig;
 import edu.upenn.cis.cis455.webserver.servlet.ServletContext;
-import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,8 +21,8 @@ class Application {
     private File webDotXmlSource;
     private Document webDotXml;
     private ServletContext servletContext;
-    private HashMap<String, HttpServlet> servletsNameToClassMapping = new HashMap<>();
-    private HashMap<String, String> urlMapping = new HashMap<>();
+    private HashMap<String, HttpServlet> servletNameToServletInstanceMapping = new HashMap<>();
+    private HashMap<String, HttpServlet> urlMapping = new HashMap<>();
 
     Application(File webDotXmlSource) {
         this.webDotXmlSource = webDotXmlSource;
@@ -80,7 +79,7 @@ class Application {
     /**
      * For each <servlet> element:
      * 1. Gets (servlet name, class name) pair from web.xml
-     * 2. Loads the class and creates an instance of it; adds entry to `servletsNameToClassMapping`.
+     * 2. Loads the class and creates an instance of it; adds entry to `servletNameToServletInstanceMapping`.
      * 4. Creates a ServletConfig from <init-param> elements.
      * 5. Calls the servlet's `init` method.
      */
@@ -105,7 +104,7 @@ class Application {
                 throw new WebDotXmlException("Invalid class for the servlet.", e);
             }
 
-            servletsNameToClassMapping.put(servletName, servlet);
+            servletNameToServletInstanceMapping.put(servletName, servlet);
 
             HashMap<String, String> initParameters;
             try {
@@ -145,8 +144,8 @@ class Application {
                 throw new WebDotXmlException(e);
             }
 
-            if (servletsNameToClassMapping.containsKey(servletName)) {
-                urlMapping.put(servletName, urlPattern);
+            if (servletNameToServletInstanceMapping.containsKey(servletName)) {
+                urlMapping.put(urlPattern, servletNameToServletInstanceMapping.get(servletName));
             } else {
                 throw new WebDotXmlException("No servlet for the servlet name in mapping.");
             }
@@ -158,8 +157,10 @@ class Application {
     }
 
     HttpServlet getServletByName(String s) {
-        return servletsNameToClassMapping.get(s);
+        return servletNameToServletInstanceMapping.get(s);
     }
+
+    HttpServlet getServletByUrl(String url) { return urlMapping.get(url); }
 }
 
 class WebDotXmlException extends Exception {
