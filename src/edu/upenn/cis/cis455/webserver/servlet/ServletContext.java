@@ -13,18 +13,25 @@ import java.util.Set;
 public class ServletContext implements javax.servlet.ServletContext {
 
     private String displayName;
-    private HashMap<String, String> initParameters = new HashMap<>();
+    private HashMap<String, String> initParameters;
+    private HashMap<String, Object> attributes = new HashMap<>();
 
     public ServletContext(String displayName, HashMap<String, String> initParameters) {
         this.displayName = displayName;
         this.initParameters = initParameters;
     }
 
+    /**
+     * Single app server, can return null.
+     */
     @Override
     public javax.servlet.ServletContext getContext(String s) {
         return null;
     }
 
+    /**
+     * Single app server, can return empty string.
+     */
     @Override
     public String getRealPath(String s) {
         return "";
@@ -42,28 +49,24 @@ public class ServletContext implements javax.servlet.ServletContext {
 
     @Override
     public Enumeration getInitParameterNames() {
-        return new InitParametersEnumeration(initParameters);
+        return new MapKeysEnumeration(initParameters);
     }
-
-    // start attrs
 
     @Override
     public Object getAttribute(String s) {
-        return null;
+        return attributes.get(s);
     }
 
     @Override
     public Enumeration getAttributeNames() {
-        return null;
+        return new MapKeysEnumeration(attributes);
     }
 
     @Override
-    public void setAttribute(String s, Object o) {  }
+    public void setAttribute(String s, Object o) { attributes.put(s, o); }
 
     @Override
-    public void removeAttribute(String s) {  }
-
-    // end attrs
+    public void removeAttribute(String s) { attributes.remove(s); }
 
     @Override
     public String getServletContextName() {

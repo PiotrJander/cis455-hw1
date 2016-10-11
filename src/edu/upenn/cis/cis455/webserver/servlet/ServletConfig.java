@@ -1,6 +1,5 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
-import javax.servlet.*;
 import javax.servlet.ServletContext;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -13,7 +12,11 @@ public class ServletConfig implements javax.servlet.ServletConfig {
     private HashMap<String, String> initParameters = new HashMap<>();
     private ServletContext servletContext;
 
-    // TODO constructor
+    public ServletConfig(String servletName, HashMap<String, String> initParameters, ServletContext servletContext) {
+        this.servletName = servletName;
+        this.initParameters = initParameters;
+        this.servletContext = servletContext;
+    }
 
     @Override
     public String getServletName() {
@@ -32,15 +35,15 @@ public class ServletConfig implements javax.servlet.ServletConfig {
 
     @Override
     public Enumeration getInitParameterNames() {
-        return new InitParametersEnumeration(initParameters);
+        return new MapKeysEnumeration(initParameters);
     }
 }
 
-class InitParametersEnumeration implements Enumeration {
+class MapKeysEnumeration implements Enumeration {
 
     private Iterator<String> iterator;
 
-    InitParametersEnumeration(Map<String, String> map) {
+    MapKeysEnumeration(Map<String, ?> map) {
         iterator = map.keySet().iterator();
     }
 

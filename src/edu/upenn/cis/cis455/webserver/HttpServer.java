@@ -1,14 +1,15 @@
 package edu.upenn.cis.cis455.webserver;
 
+import edu.upenn.cis.cis455.webserver.servlet.ServletConfig;
 import edu.upenn.cis.cis455.webserver.servlet.ServletContext;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -63,6 +64,9 @@ public class HttpServer {
         log.info("Http Server terminating");
 	}
 
+    /**
+     * Creates a ServletContext from data in web.xml.
+     */
     private static void makeServletContext() {
         String displayName = webDotXml.getElementsByTagName("display-name").item(0).getTextContent();
 
@@ -77,24 +81,50 @@ public class HttpServer {
         servletContext = new ServletContext(displayName, contextInitParams);
     }
 
+    /**
+     * For each <servlet> element:
+     * 1. Gets (servlet name, class name) pair from web.xml
+     * 2. Loads the class and creates an instance of it; adds entry to `servletsNameToClassMapping`.
+     * 4. Creates a ServletConfig from <init-param> elements.
+     * 5. Calls the servlet's `init` method.
+     */
     private static void loadServlets() {
         NodeList servlets = webDotXml.getElementsByTagName("servlet");
         for (int i = 0; i < servlets.getLength(); i++) {
             Element servletElement = (Element) servlets.item(i);
-            String name = servletElement.getElementsByTagName("servlet-name").item(0).getTextContent();
+            String servletName = servletElement.getElementsByTagName("servlet-name").item(0).getTextContent();
             String className = servletElement.getElementsByTagName("servlet-class").item(0).getTextContent();
 
+            HttpServlet servlet;
             try {
-                HttpServlet servlet = (HttpServlet) Class.forName(className).newInstance();
-                servletsNameToClassMapping.put(name, servlet);
+                servlet = (HttpServlet) Class.forName(className).newInstance();
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
+                continue;
             }
 
-            // TODO handle init params
+            servletsNameToClassMapping.put(servletName, servlet);
+
+            NodeList initParamElementSet = servletElement.getElementsByTagName("init-param");
+            HashMap<String, String> initParameters = new HashMap<>();
+            for (int j = 0; j < initParamElementSet.getLength(); j++) {
+                Element initParamElement = (Element) initParamElementSet.item(j);
+                String paramName = initParamElement.getElementsByTagName("param-name").item(0).getTextContent();
+                String paramValue = initParamElement.getElementsByTagName("param-value").item(0).getTextContent();
+                initParameters.put(paramName, paramValue);
+            }
+
+            try {
+                servlet.init(new ServletConfig(servletName, initParameters, servletContext));
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    /**
+     * Parses web.xml, and saves the DOM as `webDotXml`.
+     */
     private static void parseWebDotXml() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
