@@ -67,7 +67,7 @@ public class HttpServer {
     /**
      * Creates a ServletContext from data in web.xml.
      */
-    public static void makeServletContext() {
+    static void makeServletContext() {
         String displayName = webDotXml.getElementsByTagName("display-name").item(0).getTextContent();
 
         NodeList contextParamsXml = webDotXml.getElementsByTagName("context-param");
@@ -221,8 +221,12 @@ public class HttpServer {
         return workersPool;
     }
 
-    public static void setWebDotXmlSource(File webDotXmlSource) {
+    static void setWebDotXmlSource(File webDotXmlSource) {
         HttpServer.webDotXmlSource = webDotXmlSource;
+    }
+
+    static ServletContext getServletContext() {
+        return servletContext;
     }
 
 }

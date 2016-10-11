@@ -74,9 +74,7 @@ public class ServletContext implements javax.servlet.ServletContext {
     }
 
     @Override
-    public int getMajorVersion() {
-        return 2;
-    }
+    public int getMajorVersion() { return 2; }
 
     @Override
     public int getMinorVersion() {
