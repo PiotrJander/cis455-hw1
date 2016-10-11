@@ -8,27 +8,22 @@ import javax.servlet.http.HttpServlet;
 import java.io.File;
 import java.util.Enumeration;
 
-public class HttpServerTest extends TestCase {
+public class ApplicationTest extends TestCase {
 
-    private ServletContext servletContext;
-    private HttpServlet calculatorServlet;
+    private Application application;
 
     public void setUp() throws Exception {
         super.setUp();
-        HttpServer.setWebDotXmlSource(new File("conf/web.xml"));
-        HttpServer.parseWebDotXml();
-        HttpServer.makeServletContext();
-        servletContext = HttpServer.getServletContext();
-        HttpServer.loadServlets();
-        calculatorServlet = HttpServer.getServletByName("CalculatorServlet");
+        application = new Application(new File("conf/web.xml"));
+        application.create();
     }
 
     public void testContextGetAttribute() throws Exception {
-        assertEquals(servletContext.getInitParameter("piotr"), "jander");
+        assertEquals(application.getServletContext().getInitParameter("piotr"), "jander");
     }
 
     public void testContextGetInitParameterNames() throws Exception {
-        Enumeration initParameterNames = servletContext.getInitParameterNames();
+        Enumeration initParameterNames = application.getServletContext().getInitParameterNames();
         String param = (String) initParameterNames.nextElement();
         assertTrue(param.equals("piotr") || param.equals("magda"));
         initParameterNames.nextElement();
@@ -36,6 +31,7 @@ public class HttpServerTest extends TestCase {
     }
 
     public void testAttributes() throws Exception {
+        ServletContext servletContext = application.getServletContext();
         servletContext.setAttribute("foo", 1);
         assertEquals(servletContext.getAttribute("foo"), 1);
         servletContext.removeAttribute("foo");
@@ -43,13 +39,14 @@ public class HttpServerTest extends TestCase {
     }
 
     public void testServletGenericMethods() throws Exception {
+        HttpServlet calculatorServlet = application.getServletByName("CalculatorServlet");
         assertEquals(calculatorServlet.getInitParameter("baz"), "xyz");
         assertEquals(calculatorServlet.getServletContext().getMajorVersion(), 2);
         assertEquals(calculatorServlet.getServletName(), "CalculatorServlet");
     }
 
     public void testServletConfig() throws Exception {
-        ServletConfig servletConfig = calculatorServlet.getServletConfig();
+        ServletConfig servletConfig = application.getServletByName("CalculatorServlet").getServletConfig();
         assertEquals(servletConfig.getServletName(), "CalculatorServlet");
         assertEquals(servletConfig.getServletContext().getMajorVersion(), 2);
         assertEquals(servletConfig.getInitParameter("baz"), "xyz");
