@@ -29,6 +29,7 @@ public class HttpServer {
     // arguments
     private static int portNumber;
     private static Path rootDirectory;
+
     private static File webDotXmlSource;
 
     // queue
@@ -39,7 +40,6 @@ public class HttpServer {
     private final static int WORKERS_POOL_SIZE = 50;
     private static Worker[] workersPool = new Worker[WORKERS_POOL_SIZE];
 
-    // other
     private static ServerSocket serverSocket;
     private static Document webDotXml;
     private static ServletContext servletContext;
@@ -67,7 +67,7 @@ public class HttpServer {
     /**
      * Creates a ServletContext from data in web.xml.
      */
-    private static void makeServletContext() {
+    public static void makeServletContext() {
         String displayName = webDotXml.getElementsByTagName("display-name").item(0).getTextContent();
 
         NodeList contextParamsXml = webDotXml.getElementsByTagName("context-param");
@@ -88,7 +88,7 @@ public class HttpServer {
      * 4. Creates a ServletConfig from <init-param> elements.
      * 5. Calls the servlet's `init` method.
      */
-    private static void loadServlets() {
+    public static void loadServlets() {
         NodeList servlets = webDotXml.getElementsByTagName("servlet");
         for (int i = 0; i < servlets.getLength(); i++) {
             Element servletElement = (Element) servlets.item(i);
@@ -125,7 +125,7 @@ public class HttpServer {
     /**
      * Parses web.xml, and saves the DOM as `webDotXml`.
      */
-    private static void parseWebDotXml() {
+    public static void parseWebDotXml() {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -219,6 +219,10 @@ public class HttpServer {
 
     static Worker[] getWorkersPool() {
         return workersPool;
+    }
+
+    public static void setWebDotXmlSource(File webDotXmlSource) {
+        HttpServer.webDotXmlSource = webDotXmlSource;
     }
 
 }
