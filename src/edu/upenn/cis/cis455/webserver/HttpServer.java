@@ -229,4 +229,8 @@ public class HttpServer {
         return servletContext;
     }
 
+    static HttpServlet getServletByName(String s) {
+        return servletsNameToClassMapping.get(s);
+    }
+
 }
