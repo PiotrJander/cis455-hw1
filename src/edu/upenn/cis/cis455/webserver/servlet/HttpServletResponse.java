@@ -180,6 +180,9 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     }
 
+    /**
+     * TODO should return null by default, or the results of setLocale if it was previously called.
+     */
     @Override
     public Locale getLocale() {
         return null;

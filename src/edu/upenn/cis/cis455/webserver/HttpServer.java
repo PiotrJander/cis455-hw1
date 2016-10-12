@@ -132,4 +132,7 @@ public class HttpServer {
         HttpServer.webDotXmlSource = webDotXmlSource;
     }
 
+    public static int getPortNumber() {
+        return portNumber;
+    }
 }

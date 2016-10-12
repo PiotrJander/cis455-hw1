@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class HttpRequest {
+public class HttpRequest {
     private final BufferedReader in;
 
     private boolean ok = true;
@@ -21,7 +20,7 @@ class HttpRequest {
     private String path;
     private HttpVersion version = HttpVersion.ONE_0;
 
-    private HashMap<String, String> httpRequestHeaders = new HashMap<>();
+    private HashMap<String, List<String>> httpRequestHeaders = new HashMap<>();
 
     HttpRequest(BufferedReader in) throws IOException {
         this.in = in;
@@ -81,7 +80,14 @@ class HttpRequest {
             if (m.matches()) {
                 String name = m.group("name");
                 String value = m.group("value");
-                httpRequestHeaders.put(name, value);
+
+                // deal with comma-separated values
+                List<String> values = Arrays.asList(value.split(","));
+                if (httpRequestHeaders.containsKey(name)) {
+                    httpRequestHeaders.get(name).addAll(values);
+                } else {
+                    httpRequestHeaders.put(name, values);
+                }
             } else {
                 throw new BadRequestException("Invalid header " + line);
             }
@@ -146,8 +152,11 @@ class HttpRequest {
         return method;
     }
 
-    String getHeaderValue(String headerName) {
-        return httpRequestHeaders.get(headerName);
+    /**
+     * Returns the first value for the header (usually there's just one value).
+     */
+    public String getHeaderValue(String headerName) {
+        return httpRequestHeaders.get(headerName).get(0);
     }
 
     String getBadRequestErrorMessage() {
@@ -155,7 +164,11 @@ class HttpRequest {
     }
 
     boolean continueExpected() {
-        return Objects.equals(httpRequestHeaders.get("Expect"), "100-continue");
+        return Objects.equals(getHeaderValue("Expect"), "100-continue");
+    }
+
+    public HashMap<String, List<String>> getHeaders() {
+        return httpRequestHeaders;
     }
 }
 

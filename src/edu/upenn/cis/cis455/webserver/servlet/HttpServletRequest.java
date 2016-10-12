@@ -1,5 +1,8 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
+import edu.upenn.cis.cis455.webserver.HttpRequest;
+import edu.upenn.cis.cis455.webserver.HttpServer;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.*;
@@ -7,52 +10,77 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.Principal;
-import java.util.Enumeration;
-import java.util.Locale;
-import java.util.Map;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+
 
 public class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
-    /**
-     * TODO should always return BASIC AUTH (“BASIC”)
-     */
-    @Override
-    public String getAuthType() {
-        return null;
+
+    private HashMap<String, Object> attributes = new HashMap<>();
+    private String encoding = "ISO-8859-1";
+    private Socket socket;
+    private HttpRequest baseRequest;
+
+    public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
+        this.socket = socket;
+        this.baseRequest = baseRequest;
     }
 
-    @Override
-    public Cookie[] getCookies() {
-        return new Cookie[0];
-    }
+    // START headers
 
     @Override
     public long getDateHeader(String s) {
-        return 0;
+        String dateString = getHeader(s);
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        ZonedDateTime date = ZonedDateTime.parse(dateString, formatter);
+        return date.toInstant().toEpochMilli();
     }
 
     @Override
     public String getHeader(String s) {
-        return null;
+        return baseRequest.getHeaderValue(s);
     }
 
     @Override
     public Enumeration getHeaders(String s) {
-        return null;
+        return Collections.enumeration(baseRequest.getHeaders().get(s));
     }
 
     @Override
     public Enumeration getHeaderNames() {
+        return new MapKeysEnumeration(baseRequest.getHeaders());
+    }
+
+    @Override
+    public int getIntHeader(String s) throws NumberFormatException {
+        return Integer.parseInt(getHeader(s));
+    }
+
+    // END headers
+
+    // START need request data for those
+
+    /**
+     * TODO return e.g. HTTP/1.1
+     */
+    @Override
+    public String getProtocol() {
         return null;
     }
 
     @Override
-    public int getIntHeader(String s) {
-        return 0;
-    }
-
-    @Override
     public String getMethod() {
+        return null;
+    }/**
+     * TODO should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
+     */
+    @Override
+    public String getQueryString() {
         return null;
     }
 
@@ -65,52 +93,8 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * @NotRequired
+     * Returns the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request.
      */
-    @Override
-    public String getPathTranslated() {
-        return null;
-    }
-
-    @Override
-    public String getContextPath() {
-        return null;
-    }
-
-    /**
-     * TODO should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
-     */
-    @Override
-    public String getQueryString() {
-        return null;
-    }
-
-    @Override
-    public String getRemoteUser() {
-        return null;
-    }
-
-    /**
-     * @NotRequired
-     */
-    @Override
-    public boolean isUserInRole(String s) {
-        return false;
-    }
-
-    /**
-     * @NotRequired
-     */
-    @Override
-    public Principal getUserPrincipal() {
-        return null;
-    }
-
-    @Override
-    public String getRequestedSessionId() {
-        return null;
-    }
-
     @Override
     public String getRequestURI() {
         return null;
@@ -119,70 +103,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     @Override
     public StringBuffer getRequestURL() {
         return null;
-    }
-
-    @Override
-    public String getServletPath() {
-        return null;
-    }
-
-    @Override
-    public HttpSession getSession(boolean b) {
-        return null;
-    }
-
-    @Override
-    public HttpSession getSession() {
-        return null;
-    }
-
-    @Override
-    public boolean isRequestedSessionIdValid() {
-        return false;
-    }
-
-    @Override
-    public boolean isRequestedSessionIdFromCookie() {
-        return false;
-    }
-
-    /**
-     * TODO should always return false.
-     */
-    @Override
-    public boolean isRequestedSessionIdFromURL() {
-        return false;
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public boolean isRequestedSessionIdFromUrl() {
-        return false;
-    }
-
-    @Override
-    public Object getAttribute(String s) {
-        return null;
-    }
-
-    @Override
-    public Enumeration getAttributeNames() {
-        return null;
-    }
-
-    /**
-     * TODO should return “ISO-8859-1” by default, and the results of setCharacterEncoding if it was previously called.
-     */
-    @Override
-    public String getCharacterEncoding() {
-        return null;
-    }
-
-    @Override
-    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
-
     }
 
     @Override
@@ -195,10 +115,32 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
+    /**
+     * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
+     * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
+     */
+    @Override
+    public String getServletPath() {
+        return null;
+    }
+
+    // END need request data for those
+
+    // START readers and streams
+
     @Override
     public ServletInputStream getInputStream() throws IOException {
         return null;
     }
+
+    @Override
+    public BufferedReader getReader() throws IOException {
+        return null;
+    }
+
+    // END readers and streams
+
+    // START params
 
     @Override
     public String getParameter(String s) {
@@ -220,33 +162,9 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
-    @Override
-    public String getProtocol() {
-        return null;
-    }
+    // END params
 
-    /**
-     * TODO should return “http”.
-     */
-    @Override
-    public String getScheme() {
-        return null;
-    }
-
-    @Override
-    public String getServerName() {
-        return null;
-    }
-
-    @Override
-    public int getServerPort() {
-        return 0;
-    }
-
-    @Override
-    public BufferedReader getReader() throws IOException {
-        return null;
-    }
+    // START need socket for those
 
     @Override
     public String getRemoteAddr() {
@@ -259,17 +177,163 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     @Override
-    public void setAttribute(String s, Object o) {
+    public int getRemotePort() {
+        return 0;
+    }
 
+    @Override
+    public String getLocalAddr() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public int getLocalPort() {
+        return HttpServer.getPortNumber();
+    }
+
+    @Override
+    public int getServerPort() {
+        return 0;
+    }
+
+    // END need socket for those
+
+    // START session
+
+    @Override
+    public HttpSession getSession(boolean b) {
+        return null;
+    }
+
+    @Override
+    public HttpSession getSession() {
+        return null;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdValid() {
+        return false;
+    }
+
+    @Override
+    public boolean isRequestedSessionIdFromCookie() {
+        return false;
+    }
+
+    @Override
+    public String getRequestedSessionId() {
+        return null;
+    }
+
+    @Override
+    public Cookie[] getCookies() {
+        return new Cookie[0];
+    }
+
+    // END session
+
+    // DONE
+
+    /**
+     * Should always return false.
+     */
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+        return false;
+    }
+
+    @Override
+    public boolean isSecure() {
+        return false;
+    }
+
+    /**
+     * Should return “http”.
+     */
+    @Override
+    public String getScheme() {
+        return "http";
+    }
+
+    @Override
+    public String getServerName() {
+        return "Piotr's Server";
+    }
+
+    @Override
+    public String getLocalName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Should return “ISO-8859-1” by default, and the results of setCharacterEncoding if it was previously called.
+     */
+    @Override
+    public String getCharacterEncoding() {
+        return encoding;
+    }
+
+    @Override
+    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
+        encoding = s;
+    }
+
+    /**
+     * Returns null since I don't implement multiple apps.
+     */
+    @Override
+    public String getContextPath() {
+        return null;
+    }
+
+    /**
+     * Should always return BASIC AUTH (“BASIC”)
+     */
+    @Override
+    public String getAuthType() {
+        return "BASIC";
+    }
+
+    /**
+     * Returns null since we don't implement HTTP authentication.
+     */
+    @Override
+    public String getRemoteUser() {
+        return null;
+    }
+
+    @Override
+    public Object getAttribute(String s) {
+        return attributes.get(s);
+    }
+
+    @Override
+    public void setAttribute(String s, Object o) {
+        attributes.put(s, o);
     }
 
     @Override
     public void removeAttribute(String s) {
+        attributes.remove(s);
+    }
 
+    @Override
+    public Enumeration getAttributeNames() {
+        return new MapKeysEnumeration(attributes);
     }
 
     /**
-     * TODO should return null by default, or the results of setLocale if it was previously called.
+     * @NotRequired
      */
     @Override
     public Locale getLocale() {
@@ -284,8 +348,27 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
+    /**
+     * @NotRequired
+     */
     @Override
-    public boolean isSecure() {
+    public RequestDispatcher getRequestDispatcher(String s) {
+        return null;
+    }
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public String getPathTranslated() {
+        return null;
+    }
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public boolean isUserInRole(String s) {
         return false;
     }
 
@@ -293,7 +376,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
      * @NotRequired
      */
     @Override
-    public RequestDispatcher getRequestDispatcher(String s) {
+    public Principal getUserPrincipal() {
         return null;
     }
 
@@ -305,23 +388,11 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
+    /**
+     * @deprecated
+     */
     @Override
-    public int getRemotePort() {
-        return 0;
-    }
-
-    @Override
-    public String getLocalName() {
-        return null;
-    }
-
-    @Override
-    public String getLocalAddr() {
-        return null;
-    }
-
-    @Override
-    public int getLocalPort() {
-        return 0;
+    public boolean isRequestedSessionIdFromUrl() {
+        return false;
     }
 }
