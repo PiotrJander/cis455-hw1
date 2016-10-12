@@ -35,52 +35,9 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         this.baseRequest = baseRequest;
     }
 
-    // START headers
-
-    @Override
-    public long getDateHeader(String s) {
-        String dateString = getHeader(s);
-        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-        ZonedDateTime date = ZonedDateTime.parse(dateString, formatter);
-        return date.toInstant().toEpochMilli();
-    }
-
-    @Override
-    public String getHeader(String s) {
-        return baseRequest.getHeaderValue(s);
-    }
-
-    @Override
-    public Enumeration getHeaders(String s) {
-        return Collections.enumeration(baseRequest.getHeaders().get(s));
-    }
-
-    @Override
-    public Enumeration getHeaderNames() {
-        return new MapKeysEnumeration(baseRequest.getHeaders());
-    }
-
-    @Override
-    public int getIntHeader(String s) throws NumberFormatException {
-        return Integer.parseInt(getHeader(s));
-    }
-
-    // END headers
-
-    // START need request data for those
+    // START url parts
 
     /**
-     * TODO return e.g. HTTP/1.1
-     */
-    @Override
-    public String getProtocol() {
-        return null;
-    }
-
-    @Override
-    public String getMethod() {
-        return null;
-    }/**
      * TODO should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
      */
     @Override
@@ -109,16 +66,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
-    @Override
-    public int getContentLength() {
-        return 0;
-    }
-
-    @Override
-    public String getContentType() {
-        return null;
-    }
-
     /**
      * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
      * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
@@ -128,7 +75,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
-    // END need request data for those
+    // END url parts
 
     // START readers and streams
 
@@ -316,6 +263,8 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         return null;
     }
 
+    // START attrs
+
     @Override
     public Object getAttribute(String s) {
         return attributes.get(s);
@@ -335,6 +284,71 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     public Enumeration getAttributeNames() {
         return new MapKeysEnumeration(attributes);
     }
+
+    // END attrs
+
+    // START headers
+
+    @Override
+    public long getDateHeader(String s) {
+        String dateString = getHeader(s);
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        ZonedDateTime date = ZonedDateTime.parse(dateString, formatter);
+        return date.toInstant().toEpochMilli();
+    }
+
+    @Override
+    public String getHeader(String s) {
+        return baseRequest.getHeaderValue(s);
+    }
+
+    @Override
+    public Enumeration getHeaders(String s) {
+        return Collections.enumeration(baseRequest.getHeaders().get(s));
+    }
+
+    @Override
+    public Enumeration getHeaderNames() {
+        return new MapKeysEnumeration(baseRequest.getHeaders());
+    }
+
+    @Override
+    public int getIntHeader(String s) throws NumberFormatException {
+        return Integer.parseInt(getHeader(s));
+    }
+
+    // END headers
+
+    // START HTTP
+
+    /**
+     * Return e.g. HTTP/1.1
+     */
+    @Override
+    public String getProtocol() {
+        return baseRequest.getVersion().getName();
+    }
+
+    @Override
+    public String getMethod() {
+        return baseRequest.getMethod().toString();
+    }
+
+    @Override
+    public int getContentLength() {
+        try {
+            return getIntHeader("Content-Length");
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    @Override
+    public String getContentType() {
+        return getHeader("Content-Type");
+    }
+
+    // END HTTP
 
     /**
      * @NotRequired

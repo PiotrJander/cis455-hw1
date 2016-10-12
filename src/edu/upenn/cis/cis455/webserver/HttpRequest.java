@@ -146,11 +146,11 @@ public class HttpRequest {
         }
     }
 
-    HttpVersion getVersion() {
+    public HttpVersion getVersion() {
         return version;
     }
 
-    HttpMethod getMethod() {
+    public HttpMethod getMethod() {
         return method;
     }
 
@@ -189,26 +189,5 @@ class BadRequestException extends Exception {
 
     String getErrorMessage() {
         return errorMessage;
-    }
-}
-
-enum HttpMethod {
-    GET,
-    HEAD,
-    POST
-}
-
-enum HttpVersion {
-    ONE_0("HTTP/1.0"),
-    ONE_1("HTTP/1.1");
-
-    private final String name;
-
-    HttpVersion(String name) {
-        this.name = name;
-    }
-
-    String getName() {
-        return name;
     }
 }
