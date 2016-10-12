@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class HttpRequest {
-    private final BufferedReader in;
+    private BufferedReader in;
 
     private boolean ok = true;
     private boolean serverError = false;
@@ -21,6 +21,8 @@ public class HttpRequest {
     private HttpVersion version = HttpVersion.ONE_0;
 
     private HashMap<String, List<String>> httpRequestHeaders = new HashMap<>();
+
+    public HttpRequest() {}
 
     HttpRequest(BufferedReader in) throws IOException {
         this.in = in;
@@ -169,6 +171,10 @@ public class HttpRequest {
 
     public HashMap<String, List<String>> getHeaders() {
         return httpRequestHeaders;
+    }
+
+    public void setHttpRequestHeaders(HashMap<String, List<String>> httpRequestHeaders) {
+        this.httpRequestHeaders = httpRequestHeaders;
     }
 }
 

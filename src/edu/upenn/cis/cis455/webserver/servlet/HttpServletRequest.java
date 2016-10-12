@@ -26,6 +26,10 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private Socket socket;
     private HttpRequest baseRequest;
 
+    public HttpServletRequest(HttpRequest baseRequest) {
+        this.baseRequest = baseRequest;
+    }
+
     public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
         this.socket = socket;
         this.baseRequest = baseRequest;
