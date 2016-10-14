@@ -28,9 +28,6 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
     private HttpRequest baseRequest;
     private Map<String, List<String>> queryParameters;
 
-    private boolean isGetInputStreamUsed = false;
-    private boolean isgetReaderUsed = false;
-
     HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
         queryParameters = splitQuery(baseRequest.getUrl());
@@ -362,32 +359,20 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     // START readers and streams
 
-    /**
-     * Retrieves the body of the request as binary data using a ServletInputStream. Either this method or getReader() may be called to read the body, not both.
-     Returns:
-     a ServletInputStream object containing the body of the request
-     Throws:
-     java.lang.IllegalStateException - if the getReader() method has already been called for this request
-     java.io.IOException - if an input or output exception occurred
-     *
-     * @return
-     * @throws IOException
-     */
     @Override
-    public ServletInputStream getInputStream() throws IOException, IllegalStateException {
-        if (isgetReaderUsed)  throw new IllegalStateException();
-        isGetInputStreamUsed = true;
-        return new ServletInputStreamImpl(baseRequest.getIn());
-    }
-
-    @Override
-    public BufferedReader getReader() throws IOException, IllegalStateException {
-        if (isGetInputStreamUsed)  throw new IllegalStateException();
-        isgetReaderUsed = true;
+    public BufferedReader getReader() throws IOException {
         return baseRequest.getIn();
     }
 
     // END readers and streams
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        return null;
+    }
 
     /**
      * @NotRequired
