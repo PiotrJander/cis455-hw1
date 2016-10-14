@@ -59,9 +59,14 @@ class Task {
             response.initializeHeaders();
             response.checkForBadRequest();
             handleSpecialRequests();
+
+            // servlet vs static
+
+
             setPath();
             getItem();
             response.send();
+            // end
         } catch (SendHttpResponseException e) {
             response.sendOverSocket(binaryOut, out);
             log.info("Response sent");

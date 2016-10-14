@@ -7,6 +7,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.xml.parsers.DocumentBuilder;
@@ -161,6 +162,12 @@ class Application {
     }
 
     HttpServlet getServletByUrl(String url) { return urlMapping.get(url); }
+
+    void destroyServlets() {
+        for (HttpServlet servlet : servletNameToServletInstanceMapping.values()) {
+            servlet.destroy();
+        }
+    }
 }
 
 class WebDotXmlException extends Exception {

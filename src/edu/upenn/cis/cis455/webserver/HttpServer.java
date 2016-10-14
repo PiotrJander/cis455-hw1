@@ -60,7 +60,7 @@ public class HttpServer {
         }
     }
 
-    static void handleInvalidArguments() {
+    private static void handleInvalidArguments() {
         System.out.println("Piotr Jander");
         System.out.println("piotr@sas.upenn.edu");
         System.exit(1);
@@ -87,7 +87,7 @@ public class HttpServer {
             }
         } catch (SocketException e) {
             stopWorkers();
-            // TODO destroy servletsNameToClassMapping
+            application.destroyServlets();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
@@ -134,5 +134,9 @@ public class HttpServer {
 
     public static int getPortNumber() {
         return portNumber;
+    }
+
+    public static Application getApplication() {
+        return application;
     }
 }
