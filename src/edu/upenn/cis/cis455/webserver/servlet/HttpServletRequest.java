@@ -1,7 +1,6 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
 import edu.upenn.cis.cis455.webserver.HttpRequest;
-import edu.upenn.cis.cis455.webserver.HttpServer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
@@ -21,7 +20,7 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 
-public class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
+class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     private HashMap<String, Object> attributes = new HashMap<>();
     private String encoding = "ISO-8859-1";
@@ -29,7 +28,10 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private HttpRequest baseRequest;
     private Map<String, List<String>> queryParameters;
 
-    public HttpServletRequest(HttpRequest baseRequest) {
+    private boolean isGetInputStreamUsed = false;
+    private boolean isgetReaderUsed = false;
+
+    HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
         extractQueryParameters();
     }
@@ -43,50 +45,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private void extractQueryParameters() {
         queryParameters = splitQuery(baseRequest.getUrl());
     }
-
-    // START borrowed from http://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
-
-    public Map<String, List<String>> splitQuery(URL url) {
-        if (url.getQuery() == null || url.getQuery().isEmpty()) {
-            return Collections.emptyMap();
-        }
-        return Arrays.stream(url.getQuery().split("&"))
-                .map(this::splitQueryParameter)
-                .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
-    }
-
-    public AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
-        final int idx = it.indexOf("=");
-        final String key = idx > 0 ? it.substring(0, idx) : it;
-        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
-        return new AbstractMap.SimpleImmutableEntry<>(key, value);
-    }
-
-    // END borrowed
-
-    // START params
-
-    @Override
-    public String getParameter(String s) {
-        return queryParameters.get(s).get(0);
-    }
-
-    @Override
-    public Enumeration getParameterNames() {
-        return Collections.enumeration(queryParameters.keySet());
-    }
-
-    @Override
-    public String[] getParameterValues(String s) {
-        return new String[0];
-    }
-
-    @Override
-    public Map getParameterMap() {
-        return null;
-    }
-
-    // END params
 
     // START pattern matching in paths
 
@@ -108,59 +66,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     // END pattern matching in paths
-
-    // START readers and streams
-
-    @Override
-    public ServletInputStream getInputStream() throws IOException {
-        return null;
-    }
-
-    @Override
-    public BufferedReader getReader() throws IOException {
-        return null;
-    }
-
-    // END readers and streams
-
-    // START need socket for those
-
-    @Override
-    public String getRemoteAddr() {
-        return null;
-    }
-
-    @Override
-    public String getRemoteHost() {
-        return null;
-    }
-
-    @Override
-    public int getRemotePort() {
-        return 0;
-    }
-
-    @Override
-    public String getLocalAddr() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public int getLocalPort() {
-        return HttpServer.getPortNumber();
-    }
-
-    @Override
-    public int getServerPort() {
-        return 0;
-    }
-
-    // END need socket for those
 
     // START session
 
@@ -196,80 +101,9 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     // END session
 
+    // ****************************************************************************************************************
     // DONE
-
-    /**
-     * Should always return false.
-     */
-    @Override
-    public boolean isRequestedSessionIdFromURL() {
-        return false;
-    }
-
-    @Override
-    public boolean isSecure() {
-        return false;
-    }
-
-    /**
-     * Should return “http”.
-     */
-    @Override
-    public String getScheme() {
-        return "http";
-    }
-
-    @Override
-    public String getServerName() {
-        return "Piotr's Server";
-    }
-
-    @Override
-    public String getLocalName() {
-        try {
-            return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Should return “ISO-8859-1” by default, and the results of setCharacterEncoding if it was previously called.
-     */
-    @Override
-    public String getCharacterEncoding() {
-        return encoding;
-    }
-
-    @Override
-    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
-        encoding = s;
-    }
-
-    /**
-     * Returns null since I don't implement multiple apps.
-     */
-    @Override
-    public String getContextPath() {
-        return null;
-    }
-
-    /**
-     * Should always return BASIC AUTH (“BASIC”)
-     */
-    @Override
-    public String getAuthType() {
-        return "BASIC";
-    }
-
-    /**
-     * Returns null since we don't implement HTTP authentication.
-     */
-    @Override
-    public String getRemoteUser() {
-        return null;
-    }
+    // ****************************************************************************************************************
 
     // START attrs
 
@@ -387,6 +221,194 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     // END url parts
+
+    // START borrowed from http://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
+
+    public Map<String, List<String>> splitQuery(URL url) {
+        if (url.getQuery() == null || url.getQuery().isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return Arrays.stream(url.getQuery().split("&"))
+                .map(this::splitQueryParameter)
+                .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
+    }
+
+    public AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
+        final int idx = it.indexOf("=");
+        final String key = idx > 0 ? it.substring(0, idx) : it;
+        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
+        return new AbstractMap.SimpleImmutableEntry<>(key, value);
+    }
+
+    // END borrowed
+
+    // START params
+
+    @Override
+    public String getParameter(String s) {
+        return queryParameters.get(s).get(0);
+    }
+
+    @Override
+    public Enumeration getParameterNames() {
+        return Collections.enumeration(queryParameters.keySet());
+    }
+
+    @Override
+    public String[] getParameterValues(String s) {
+        List<String> ret = queryParameters.get(s);
+        return ret.toArray(new String[ret.size()]);
+    }
+
+    @Override
+    public Map getParameterMap() {
+        return queryParameters;
+    }
+
+    // END params
+
+    // START meta
+
+    @Override
+    public String getRemoteAddr() {
+        return socket.getRemoteSocketAddress().toString();
+    }
+
+    @Override
+    public String getRemoteHost() {
+        return getRemoteAddr();
+    }
+
+    @Override
+    public int getRemotePort() {
+        return socket.getPort();
+    }
+
+    @Override
+    public String getLocalAddr() {
+        return socket.getLocalAddress().toString();
+//        try {
+//            return InetAddress.getLocalHost().getHostAddress();
+//        } catch (UnknownHostException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+    }
+
+    @Override
+    public int getLocalPort() {
+//        return HttpServer.getPortNumber();
+        return socket.getLocalPort();
+    }
+
+    @Override
+    public int getServerPort() {
+        return getLocalPort();
+    }
+
+    /**
+     * Should always return false.
+     */
+    @Override
+    public boolean isRequestedSessionIdFromURL() {
+        return false;
+    }
+
+    @Override
+    public boolean isSecure() {
+        return false;
+    }
+
+    /**
+     * Should return “http”.
+     */
+    @Override
+    public String getScheme() {
+        return "http";
+    }
+
+    @Override
+    public String getServerName() {
+        return "Piotr's Server";
+    }
+
+    @Override
+    public String getLocalName() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Should return “ISO-8859-1” by default, and the results of setCharacterEncoding if it was previously called.
+     */
+    @Override
+    public String getCharacterEncoding() {
+        return encoding;
+    }
+
+    @Override
+    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
+        encoding = s;
+    }
+
+    /**
+     * Returns null since I don't implement multiple apps.
+     */
+    @Override
+    public String getContextPath() {
+        return null;
+    }
+
+    /**
+     * Should always return BASIC AUTH (“BASIC”)
+     */
+    @Override
+    public String getAuthType() {
+        return "BASIC";
+    }
+
+    /**
+     * Returns null since we don't implement HTTP authentication.
+     */
+    @Override
+    public String getRemoteUser() {
+        return null;
+    }
+
+    // END meta
+
+    // START readers and streams
+
+    /**
+     * Retrieves the body of the request as binary data using a ServletInputStream. Either this method or getReader() may be called to read the body, not both.
+     Returns:
+     a ServletInputStream object containing the body of the request
+     Throws:
+     java.lang.IllegalStateException - if the getReader() method has already been called for this request
+     java.io.IOException - if an input or output exception occurred
+     *
+     * @return
+     * @throws IOException
+     */
+    @Override
+    public ServletInputStream getInputStream() throws IOException, IllegalStateException {
+        if (isgetReaderUsed)  throw new IllegalStateException();
+        isGetInputStreamUsed = true;
+        return new ServletInputStreamImpl(baseRequest.getIn());
+    }
+
+    @Override
+    public BufferedReader getReader() throws IOException, IllegalStateException {
+        if (isGetInputStreamUsed)  throw new IllegalStateException();
+        isgetReaderUsed = true;
+        return baseRequest.getIn();
+    }
+
+    // END readers and streams
 
     /**
      * @NotRequired

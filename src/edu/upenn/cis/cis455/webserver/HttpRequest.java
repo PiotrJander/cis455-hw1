@@ -73,6 +73,8 @@ public class HttpRequest {
 
     /**
      * Syntax not semantics here.
+     *
+     * After execution of this method, the reader will be at the start of the body.
      */
     void parseHeaders() throws IOException, BadRequestException {
         String line;
@@ -191,6 +193,14 @@ public class HttpRequest {
 
     public URL getUrl() {
         return url;
+    }
+
+    public String getPath() {
+        return url.getPath();
+    }
+
+    public BufferedReader getIn() {
+        return in;
     }
 }
 
