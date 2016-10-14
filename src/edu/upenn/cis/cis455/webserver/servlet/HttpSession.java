@@ -36,25 +36,8 @@ public class HttpSession implements javax.servlet.http.HttpSession {
         return 0;
     }
 
-    /**
-     * @deprecated
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public HttpSessionContext getSessionContext() {
-        return null;
-    }
-
     @Override
     public Object getAttribute(String s) {
-        return null;
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public Object getValue(String s) {
         return null;
     }
 
@@ -63,37 +46,13 @@ public class HttpSession implements javax.servlet.http.HttpSession {
         return null;
     }
 
-    /**
-     * @deprecated
-     */
-    @Override
-    public String[] getValueNames() {
-        return new String[0];
-    }
-
     @Override
     public void setAttribute(String s, Object o) {
 
     }
 
-    /**
-     * @deprecated
-     */
-    @Override
-    public void putValue(String s, Object o) {
-
-    }
-
     @Override
     public void removeAttribute(String s) {
-
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public void removeValue(String s) {
 
     }
 
@@ -105,5 +64,46 @@ public class HttpSession implements javax.servlet.http.HttpSession {
     @Override
     public boolean isNew() {
         return false;
+    }
+
+    /**
+     * @deprecated
+     */
+    @SuppressWarnings("deprecation")
+    @Override
+    public HttpSessionContext getSessionContext() {
+        return null;
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public Object getValue(String s) {
+        return null;
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public String[] getValueNames() {
+        return new String[0];
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public void removeValue(String s) {
+
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public void putValue(String s, Object o) {
+
     }
 }

@@ -6,17 +6,19 @@ import java.io.PrintWriter;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class HttpResponse {
+public class HttpResponse {
     private HttpRequest request;
 
     private HttpMethod method;
     private HttpVersion version;
     private HttpStatus status;
 
-    private Map<String, String> httpResponseHeaders = new HashMap<>();
+    private Map<String, List<String>> httpResponseHeaders = new HashMap<>();
 
     private byte[] payload = new byte[0];
 
@@ -39,32 +41,44 @@ class HttpResponse {
     }
 
     void initializeHeaders() {
-        addResponseHeader("Server", "Piotr's server");
-        addResponseHeader("Connection", "close");
-        addResponseHeader("Date", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        setHeader("Server", "Piotr's server");
+        setHeader("Connection", "close");
+        setHeader("Date", ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME));
     }
 
-    private void addResponseHeader(String name, String value) {
-        httpResponseHeaders.put(name, value);
+    public boolean containsHeader(String s) {
+        return httpResponseHeaders.containsKey(s);
+    }
+
+    public void setHeader(String name, String value) {
+        httpResponseHeaders.put(name, Collections.singletonList(value));
+    }
+
+    public void addHeader(String name, String value) {
+        if (containsHeader(name)) {
+            httpResponseHeaders.get(name).add(value);
+        } else {
+            setHeader(name, value);
+        }
     }
 
     void setContentType(String type) {
-        addResponseHeader("Content-Type", type);
+        setHeader("Content-Type", type);
     }
 
     void setLastModified(String time) {
-        addResponseHeader("Last-Modified", time);
+        setHeader("Last-Modified", time);
     }
 
     void setPayload(String payload) {
         this.payload = payload.getBytes();
-        addResponseHeader("Content-Length", Integer.toString(this.payload.length));
+        setHeader("Content-Length", Integer.toString(this.payload.length));
         setContentType("text/html");
     }
 
     void setPayload(byte[] payload) {
         this.payload = payload;
-        addResponseHeader("Content-Length", Integer.toString(payload.length));
+        setHeader("Content-Length", Integer.toString(payload.length));
     }
 
     HttpResponse error(HttpStatus error) {
@@ -80,8 +94,8 @@ class HttpResponse {
         out.println(getStatusLine());
 
         // print headers
-        for (Map.Entry<String, String> e : httpResponseHeaders.entrySet()) {
-            out.println(String.format("%s: %s", e.getKey(), e.getValue()));
+        for (Map.Entry<String, List<String>> e : httpResponseHeaders.entrySet()) {
+            out.println(String.format("%s: %s", e.getKey(), String.join("", e.getValue())));
         }
 
         // print empty line

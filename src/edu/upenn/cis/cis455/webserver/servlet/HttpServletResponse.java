@@ -1,12 +1,25 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
+import edu.upenn.cis.cis455.webserver.HttpResponse;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
+
+    private HttpResponse baseResponse;
+
+    public HttpServletResponse(HttpResponse baseResponse) {
+        this.baseResponse = baseResponse;
+    }
+
     @Override
     public void addCookie(Cookie cookie) {
 
@@ -14,33 +27,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     @Override
     public boolean containsHeader(String s) {
-        return false;
-    }
-
-    @Override
-    public String encodeURL(String s) {
-        return null;
-    }
-
-    @Override
-    public String encodeRedirectURL(String s) {
-        return null;
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public String encodeUrl(String s) {
-        return null;
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public String encodeRedirectUrl(String s) {
-        return null;
+        return baseResponse.containsHeader(s);
     }
 
     @Override
@@ -59,45 +46,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     }
 
     @Override
-    public void setDateHeader(String s, long l) {
-
-    }
-
-    @Override
-    public void addDateHeader(String s, long l) {
-
-    }
-
-    @Override
-    public void setHeader(String s, String s1) {
-
-    }
-
-    @Override
-    public void addHeader(String s, String s1) {
-
-    }
-
-    @Override
-    public void setIntHeader(String s, int i) {
-
-    }
-
-    @Override
-    public void addIntHeader(String s, int i) {
-
-    }
-
-    @Override
     public void setStatus(int i) {
-
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public void setStatus(int i, String s) {
 
     }
 
@@ -114,14 +63,6 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
      */
     @Override
     public String getContentType() {
-        return null;
-    }
-
-    /**
-     * @NotRequired
-     */
-    @Override
-    public ServletOutputStream getOutputStream() throws IOException {
         return null;
     }
 
@@ -185,6 +126,90 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
      */
     @Override
     public Locale getLocale() {
+        return null;
+    }
+
+    // START headers
+
+    @Override
+    public void setDateHeader(String s, long l) {
+        ZonedDateTime date = ZonedDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.UTC);
+        setHeader(s, date.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+    }
+
+    @Override
+    public void addDateHeader(String s, long l) {
+        ZonedDateTime date = ZonedDateTime.ofInstant(Instant.ofEpochMilli(l), ZoneOffset.UTC);
+        addHeader(s, date.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+    }
+
+    @Override
+    public void setHeader(String s, String s1) {
+        baseResponse.setHeader(s, s1);
+    }
+
+    @Override
+    public void addHeader(String s, String s1) {
+        baseResponse.addHeader(s, s1);
+    }
+
+    @Override
+    public void setIntHeader(String s, int i) {
+        setHeader(s, Integer.toString(i));
+    }
+
+    @Override
+    public void addIntHeader(String s, int i) {
+        addHeader(s, Integer.toString(i));
+    }
+
+    // END headers
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public ServletOutputStream getOutputStream() throws IOException {
+        return null;
+    }
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public String encodeURL(String s) {
+        return null;
+    }
+
+    /**
+     * @NotRequired
+     */
+    @Override
+    public String encodeRedirectURL(String s) {
+        return null;
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public void setStatus(int i, String s) {
+
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public String encodeUrl(String s) {
+        return null;
+    }
+
+    /**
+     * @deprecated
+     */
+    @Override
+    public String encodeRedirectUrl(String s) {
         return null;
     }
 }
