@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.time.ZonedDateTime;
@@ -35,13 +36,12 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         this.baseRequest = baseRequest;
     }
 
-    // START url parts
-
     /**
-     * TODO should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
+     * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
+     * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
      */
     @Override
-    public String getQueryString() {
+    public String getServletPath() {
         return null;
     }
 
@@ -52,30 +52,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     public String getPathInfo() {
         return null;
     }
-
-    /**
-     * Returns the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request.
-     */
-    @Override
-    public String getRequestURI() {
-        return null;
-    }
-
-    @Override
-    public StringBuffer getRequestURL() {
-        return null;
-    }
-
-    /**
-     * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
-     * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
-     */
-    @Override
-    public String getServletPath() {
-        return null;
-    }
-
-    // END url parts
 
     // START readers and streams
 
@@ -349,6 +325,36 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     // END HTTP
+
+    // START url parts
+
+    /**
+     * Should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
+     */
+    @Override
+    public String getQueryString() {
+        return baseRequest.getUrl().getQuery();
+    }
+
+    /**
+     * Returns the part of this request's URL from the protocol name up to the query string in the first line of the HTTP request.
+     */
+    @Override
+    public String getRequestURI() {
+        try {
+            return baseRequest.getUrl().toURI().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    @Override
+    public StringBuffer getRequestURL() {
+        return new StringBuffer(baseRequest.getUrl().toString());
+    }
+
+    // END url parts
 
     /**
      * @NotRequired

@@ -17,7 +17,8 @@ public class HttpRequest {
     private String badRequestErrorMessage;
 
     private HttpMethod method;
-    private String path;
+    private URL url;
+    private String urlString;
     private HttpVersion version = HttpVersion.ONE_0;
 
     private HashMap<String, List<String>> httpRequestHeaders = new HashMap<>();
@@ -35,8 +36,8 @@ public class HttpRequest {
 
             if (version == HttpVersion.ONE_1) {
                 checkHost();
-                normalizePath();
             }
+            normalizePath();
         } catch (IOException e) {
             serverError = true;
         } catch (BadRequestException e) {
@@ -60,7 +61,7 @@ public class HttpRequest {
 
         try {
             setMethod(first[0]);
-            path = first[1];
+            urlString = first[1];
 
             if (first.length >= 3) {
                 setVersion(first[2]);
@@ -106,16 +107,27 @@ public class HttpRequest {
         }
     }
 
+    /**
+     *
+     */
     private void normalizePath() throws BadRequestException {
         try {
-            URL url = new URL(path);
             String host = getHeaderValue("Host");
+
+            // relative URLs (urlString, query, fragment) will be resolved relative to the context
+            URL context = new URL(String.format("http://%s", host == null ? "placeholder.com" : host));
+
+            URL url = new URL(context, urlString);
+
+            // now if absolute URL was given, the context was overriden; we must check for agreement with the Host header
             if (!Objects.equals(url.getHost(), host)) {
                 throw new BadRequestException("'Host' header and the host in the URL don't agree");
             }
-            path = url.getPath();
+
+            this.url = url;
+
         } catch (MalformedURLException ignore) {
-            // 'path' is a path, no action required
+            // 'urlString' is a urlString, no action required
         }
     }
 
@@ -123,9 +135,9 @@ public class HttpRequest {
             this.method = HttpMethod.valueOf(method);
     }
 
-    String getPath() {
-        return path;
-    }
+//    String getPath() {
+//        return urlString;
+//    }
 
     boolean isOk() {
         return ok;
@@ -175,6 +187,10 @@ public class HttpRequest {
 
     public void setHttpRequestHeaders(HashMap<String, List<String>> httpRequestHeaders) {
         this.httpRequestHeaders = httpRequestHeaders;
+    }
+
+    public URL getUrl() {
+        return url;
     }
 }
 
