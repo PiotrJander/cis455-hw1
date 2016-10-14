@@ -1,11 +1,13 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
 import edu.upenn.cis.cis455.webserver.HttpResponse;
+import edu.upenn.cis.cis455.webserver.HttpStatus;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -15,6 +17,9 @@ import java.util.Locale;
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
 
     private HttpResponse baseResponse;
+    private String characterEncoding = "ISO-8859-1";
+    private String contentType = "text/html";
+    private Locale locale;
 
     public HttpServletResponse(HttpResponse baseResponse) {
         this.baseResponse = baseResponse;
@@ -26,64 +31,8 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     }
 
     @Override
-    public boolean containsHeader(String s) {
-        return baseResponse.containsHeader(s);
-    }
-
-    @Override
-    public void sendError(int i, String s) throws IOException {
-
-    }
-
-    @Override
-    public void sendError(int i) throws IOException {
-
-    }
-
-    @Override
-    public void sendRedirect(String s) throws IOException {
-
-    }
-
-    @Override
-    public void setStatus(int i) {
-
-    }
-
-    /**
-     * TODO should return “ISO-8859-1”.
-     */
-    @Override
-    public String getCharacterEncoding() {
-        return null;
-    }
-
-    /**
-     * TODO should return “text/html” by default, and the results of setContentType if it was previously called.
-     */
-    @Override
-    public String getContentType() {
-        return null;
-    }
-
-    @Override
     public PrintWriter getWriter() throws IOException {
         return null;
-    }
-
-    @Override
-    public void setCharacterEncoding(String s) {
-
-    }
-
-    @Override
-    public void setContentLength(int i) {
-
-    }
-
-    @Override
-    public void setContentType(String s) {
-
     }
 
     @Override
@@ -116,20 +65,47 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     }
 
+    // ****************************************************************************************************************
+    // DONE
+    // ****************************************************************************************************************
+
+    /**
+     * Should return “text/html” by default, and the results of setContentType if it was previously called.
+     */
+    @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    @Override
+    public String getCharacterEncoding() {
+        return characterEncoding;
+    }
+
+    @Override
+    public void setCharacterEncoding(String s) {
+        characterEncoding = s;
+    }
+
     @Override
     public void setLocale(Locale locale) {
-
+        this.locale = locale;
     }
 
     /**
-     * TODO should return null by default, or the results of setLocale if it was previously called.
+     * Should return null by default, or the results of setLocale if it was previously called.
      */
     @Override
     public Locale getLocale() {
-        return null;
+        return locale;
     }
 
     // START headers
+
+    @Override
+    public boolean containsHeader(String s) {
+        return baseResponse.containsHeader(s);
+    }
 
     @Override
     public void setDateHeader(String s, long l) {
@@ -163,7 +139,45 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         addHeader(s, Integer.toString(i));
     }
 
+    @Override
+    public void setContentLength(int i) {
+        setIntHeader("Content-Length", i);
+    }
+
+    /**
+     * TODO no effect if writing started
+     */
+    @Override
+    public void setContentType(String s) {
+        contentType = s;
+        setHeader("Content-Type", s);
+    }
+
     // END headers
+
+    // START set status and send
+
+    @Override
+    public void setStatus(int i) {
+        baseResponse.setStatus(HttpStatus.getByCode(i));
+    }
+
+    @Override
+    public void sendError(int i, String s) throws IOException, IllegalStateException {
+        baseResponse.error(HttpStatus.getByCode(i), s);
+    }
+
+    @Override
+    public void sendError(int i) throws IOException, IllegalStateException {
+        baseResponse.error(HttpStatus.getByCode(i));
+    }
+
+    @Override
+    public void sendRedirect(String s) throws IOException, IllegalStateException {
+        setHeader("Location", (new URL(baseResponse.getRequest().getUrl(), s)).toString());
+    }
+
+    // END set status and send
 
     /**
      * @NotRequired

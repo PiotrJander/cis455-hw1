@@ -81,8 +81,14 @@ public class HttpResponse {
         setHeader("Content-Length", Integer.toString(payload.length));
     }
 
-    HttpResponse error(HttpStatus error) {
+    public HttpResponse error(HttpStatus error) {
         status = error;
+        return this;
+    }
+
+    public HttpResponse error(HttpStatus error, String msg) {
+        status = error;
+        setPayload((new HtmlTemplate(msg, msg)).toString());
         return this;
     }
 
@@ -118,8 +124,12 @@ public class HttpResponse {
         );
     }
 
-    void setStatus(HttpStatus status) {
+    public void setStatus(HttpStatus status) {
         this.status = status;
+    }
+
+    public HttpRequest getRequest() {
+        return request;
     }
 }
 
