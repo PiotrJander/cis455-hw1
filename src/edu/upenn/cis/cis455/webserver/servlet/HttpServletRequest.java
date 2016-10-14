@@ -33,16 +33,12 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
-        extractQueryParameters();
+        queryParameters = splitQuery(baseRequest.getUrl());
     }
 
     public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
         this.socket = socket;
         this.baseRequest = baseRequest;
-        extractQueryParameters();
-    }
-
-    private void extractQueryParameters() {
         queryParameters = splitQuery(baseRequest.getUrl());
     }
 
@@ -207,12 +203,7 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
      */
     @Override
     public String getRequestURI() {
-        try {
-            return baseRequest.getUrl().toURI().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return "";
-        }
+        return baseRequest.getUrl().getPath();
     }
 
     @Override
@@ -224,7 +215,7 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     // START borrowed from http://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
 
-    public Map<String, List<String>> splitQuery(URL url) {
+    private Map<String, List<String>> splitQuery(URL url) {
         if (url.getQuery() == null || url.getQuery().isEmpty()) {
             return Collections.emptyMap();
         }
@@ -233,7 +224,7 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
                 .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
     }
 
-    public AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
+    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
         final int idx = it.indexOf("=");
         final String key = idx > 0 ? it.substring(0, idx) : it;
         final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
@@ -287,17 +278,10 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
     @Override
     public String getLocalAddr() {
         return socket.getLocalAddress().toString();
-//        try {
-//            return InetAddress.getLocalHost().getHostAddress();
-//        } catch (UnknownHostException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
     }
 
     @Override
     public int getLocalPort() {
-//        return HttpServer.getPortNumber();
         return socket.getLocalPort();
     }
 
@@ -334,12 +318,7 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     @Override
     public String getLocalName() {
-        try {
-            return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return socket.getLocalAddress().toString();
     }
 
     /**

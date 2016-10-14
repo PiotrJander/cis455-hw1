@@ -62,6 +62,11 @@ public class HttpResponse {
         }
     }
 
+    public void resetHeaders() {
+        httpResponseHeaders = new HashMap<>();
+        initializeHeaders();
+    }
+
     void setContentType(String type) {
         setHeader("Content-Type", type);
     }
@@ -70,7 +75,7 @@ public class HttpResponse {
         setHeader("Last-Modified", time);
     }
 
-    void setPayload(String payload) {
+    public void setPayload(String payload) {
         this.payload = payload.getBytes();
         setHeader("Content-Length", Integer.toString(this.payload.length));
         setContentType("text/html");

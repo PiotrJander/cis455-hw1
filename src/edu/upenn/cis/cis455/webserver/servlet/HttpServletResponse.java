@@ -6,7 +6,9 @@ import edu.upenn.cis.cis455.webserver.HttpStatus;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -17,12 +19,17 @@ import java.util.Locale;
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
 
     private HttpResponse baseResponse;
+    private OutputStream out;
     private String characterEncoding = "ISO-8859-1";
     private String contentType = "text/html";
     private Locale locale;
+    private int bufferSize;
+    private StringWriter stringWriter = new StringWriter(bufferSize);
+    private boolean isCommited = false;
 
-    public HttpServletResponse(HttpResponse baseResponse) {
+    public HttpServletResponse(HttpResponse baseResponse, OutputStream out) {
         this.baseResponse = baseResponse;
+        this.out = out;
     }
 
     @Override
@@ -30,39 +37,55 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     }
 
-    @Override
-    public PrintWriter getWriter() throws IOException {
-        return null;
+    // START writing
+
+    private void commit() {
+        baseResponse.setPayload(stringWriter.toString());
+        isCommited = true;
+    }
+
+    void notifyFlush() {
+        commit();
     }
 
     @Override
-    public void setBufferSize(int i) {
+    public PrintWriter getWriter() {
+        return new ResponsePrintWriter(stringWriter, false, this);
+    }
 
+    @Override
+    public void setBufferSize(int i) throws IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
+        bufferSize = i;
     }
 
     @Override
     public int getBufferSize() {
-        return 0;
+        return bufferSize;
     }
 
     @Override
-    public void flushBuffer() throws IOException {
-
+    public void flushBuffer() {
+        commit();
     }
 
     @Override
-    public void resetBuffer() {
-
+    public void resetBuffer() throws IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
+        stringWriter = new StringWriter();
     }
 
     @Override
     public boolean isCommitted() {
-        return false;
+        return isCommited;
     }
 
     @Override
-    public void reset() {
-
+    public void reset() throws IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
+        baseResponse.setStatus(HttpStatus.OK);
+        baseResponse.resetHeaders();
+        resetBuffer();
     }
 
     // ****************************************************************************************************************
@@ -164,17 +187,23 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     @Override
     public void sendError(int i, String s) throws IOException, IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
         baseResponse.error(HttpStatus.getByCode(i), s);
+        commit();
     }
 
     @Override
     public void sendError(int i) throws IOException, IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
         baseResponse.error(HttpStatus.getByCode(i));
+        commit();
     }
 
     @Override
     public void sendRedirect(String s) throws IOException, IllegalStateException {
+        if (isCommitted())  throw new IllegalStateException();
         setHeader("Location", (new URL(baseResponse.getRequest().getUrl(), s)).toString());
+        commit();
     }
 
     // END set status and send
