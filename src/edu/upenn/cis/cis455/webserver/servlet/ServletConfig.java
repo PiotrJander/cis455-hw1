@@ -1,10 +1,7 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
 import javax.servlet.ServletContext;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ServletConfig implements javax.servlet.ServletConfig {
 
@@ -35,25 +32,6 @@ public class ServletConfig implements javax.servlet.ServletConfig {
 
     @Override
     public Enumeration getInitParameterNames() {
-        return new MapKeysEnumeration(initParameters);
-    }
-}
-
-class MapKeysEnumeration implements Enumeration {
-
-    private Iterator<String> iterator;
-
-    MapKeysEnumeration(Map<String, ?> map) {
-        iterator = map.keySet().iterator();
-    }
-
-    @Override
-    public boolean hasMoreElements() {
-        return iterator.hasNext();
-    }
-
-    @Override
-    public String nextElement() {
-        return iterator.next();
+        return Collections.enumeration(initParameters.keySet());
     }
 }

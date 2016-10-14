@@ -10,14 +10,15 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URISyntaxException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 
 public class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
@@ -26,15 +27,68 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private String encoding = "ISO-8859-1";
     private Socket socket;
     private HttpRequest baseRequest;
+    private Map<String, List<String>> queryParameters;
 
     public HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
+        extractQueryParameters();
     }
 
     public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
         this.socket = socket;
         this.baseRequest = baseRequest;
+        extractQueryParameters();
     }
+
+    private void extractQueryParameters() {
+        queryParameters = splitQuery(baseRequest.getUrl());
+    }
+
+    // START borrowed from http://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
+
+    public Map<String, List<String>> splitQuery(URL url) {
+        if (url.getQuery() == null || url.getQuery().isEmpty()) {
+            return Collections.emptyMap();
+        }
+        return Arrays.stream(url.getQuery().split("&"))
+                .map(this::splitQueryParameter)
+                .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
+    }
+
+    public AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
+        final int idx = it.indexOf("=");
+        final String key = idx > 0 ? it.substring(0, idx) : it;
+        final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
+        return new AbstractMap.SimpleImmutableEntry<>(key, value);
+    }
+
+    // END borrowed
+
+    // START params
+
+    @Override
+    public String getParameter(String s) {
+        return queryParameters.get(s).get(0);
+    }
+
+    @Override
+    public Enumeration getParameterNames() {
+        return Collections.enumeration(queryParameters.keySet());
+    }
+
+    @Override
+    public String[] getParameterValues(String s) {
+        return new String[0];
+    }
+
+    @Override
+    public Map getParameterMap() {
+        return null;
+    }
+
+    // END params
+
+    // START pattern matching in paths
 
     /**
      * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
@@ -46,12 +100,14 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * TODO should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a “/”.
+     * Should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a “/”.
      */
     @Override
     public String getPathInfo() {
         return null;
     }
+
+    // END pattern matching in paths
 
     // START readers and streams
 
@@ -66,30 +122,6 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     // END readers and streams
-
-    // START params
-
-    @Override
-    public String getParameter(String s) {
-        return null;
-    }
-
-    @Override
-    public Enumeration getParameterNames() {
-        return null;
-    }
-
-    @Override
-    public String[] getParameterValues(String s) {
-        return new String[0];
-    }
-
-    @Override
-    public Map getParameterMap() {
-        return null;
-    }
-
-    // END params
 
     // START need socket for those
 
@@ -258,7 +290,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     @Override
     public Enumeration getAttributeNames() {
-        return new MapKeysEnumeration(attributes);
+        return Collections.enumeration(attributes.keySet());
     }
 
     // END attrs
@@ -285,7 +317,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     @Override
     public Enumeration getHeaderNames() {
-        return new MapKeysEnumeration(baseRequest.getHeaders());
+        return Collections.enumeration(baseRequest.getHeaders().keySet());
     }
 
     @Override
