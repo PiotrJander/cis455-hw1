@@ -97,7 +97,11 @@ public class HttpResponse {
         return this;
     }
 
-    void send() throws SendHttpResponseException {
+    HttpResponse serverError() {
+        return error(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
+    }
+
+    public void send() throws SendHttpResponseException {
         throw new SendHttpResponseException();
     }
 
@@ -138,4 +142,3 @@ public class HttpResponse {
     }
 }
 
-class SendHttpResponseException extends Exception {}

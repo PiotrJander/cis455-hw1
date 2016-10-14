@@ -72,7 +72,7 @@ class Task {
                 // no matching pattern for servlet
                 handleStaticItems();
             } else {
-                handleServletRequest(servletPair, out);
+                handleServletRequest(servletPair);
             }
         } catch (SendHttpResponseException e) {
             response.sendOverSocket(binaryOut, out);
@@ -80,16 +80,18 @@ class Task {
         }
     }
 
-    private void handleServletRequest(PatternServletPair servletPair, PrintWriter out) throws IOException {
+    private void handleServletRequest(PatternServletPair servletPair) throws SendHttpResponseException {
         HttpServlet servlet = servletPair.getServlet();
         HttpServletRequest servletRequest = new HttpServletRequest(socket, request, servletPair.getMatch());
-        HttpServletResponse servletResponse = new HttpServletResponse(response, out);
+        HttpServletResponse servletResponse = new HttpServletResponse(response);
         try {
             servlet.service(servletRequest, servletResponse);
-        } catch (ServletException e) {
+        } catch (ServletException | IOException e) {
+            response.serverError().send();
             // TODO add to error log
             e.printStackTrace();
         }
+        servletResponse.send();
     }
 
     private void handleStaticItems() throws SendHttpResponseException {

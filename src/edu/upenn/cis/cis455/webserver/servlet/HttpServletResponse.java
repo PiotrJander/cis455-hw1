@@ -2,11 +2,11 @@ package edu.upenn.cis.cis455.webserver.servlet;
 
 import edu.upenn.cis.cis455.webserver.HttpResponse;
 import edu.upenn.cis.cis455.webserver.HttpStatus;
+import edu.upenn.cis.cis455.webserver.SendHttpResponseException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
@@ -19,7 +19,6 @@ import java.util.Locale;
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
 
     private HttpResponse baseResponse;
-    private PrintWriter out;
     private String characterEncoding = "ISO-8859-1";
     private String contentType = "text/html";
     private Locale locale;
@@ -27,9 +26,13 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     private StringWriter stringWriter;
     private boolean isCommited = false;
 
-    public HttpServletResponse(HttpResponse baseResponse, PrintWriter out) {
+    public HttpServletResponse(HttpResponse baseResponse) {
         this.baseResponse = baseResponse;
-        this.out = out;
+    }
+
+    public void send() throws SendHttpResponseException {
+        flushBuffer();
+        baseResponse.send();
     }
 
     @Override
