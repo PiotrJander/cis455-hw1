@@ -1,5 +1,6 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
+import edu.upenn.cis.cis455.webserver.HttpMethod;
 import edu.upenn.cis.cis455.webserver.HttpRequest;
 
 import javax.servlet.RequestDispatcher;
@@ -26,17 +27,18 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
     private String encoding = "ISO-8859-1";
     private Socket socket;
     private HttpRequest baseRequest;
-    private Map<String, List<String>> queryParameters;
+    private Map<String, List<String>> parameters;
+    private boolean isPostParametersRead;
 
     HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
-        queryParameters = splitQuery(baseRequest.getUrl());
+        parameters = splitQuery(baseRequest.getUrl().getQuery());
     }
 
     public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
         this.socket = socket;
         this.baseRequest = baseRequest;
-        queryParameters = splitQuery(baseRequest.getUrl());
+        parameters = splitQuery(baseRequest.getUrl().getQuery());
     }
 
     // START pattern matching in paths
@@ -212,11 +214,11 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     // START borrowed from http://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection
 
-    private Map<String, List<String>> splitQuery(URL url) {
-        if (url.getQuery() == null || url.getQuery().isEmpty()) {
+    private Map<String, List<String>> splitQuery(String query) {
+        if (query == null || query.isEmpty()) {
             return Collections.emptyMap();
         }
-        return Arrays.stream(url.getQuery().split("&"))
+        return Arrays.stream(query.split("&"))
                 .map(this::splitQueryParameter)
                 .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
     }
@@ -232,25 +234,50 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     // START params
 
+    /**
+     * POST form data is only parsed on demand, as it inferferes with `getReader`.
+     *
+     * We assume that form data is sent as application/x-www-form-urlencoded.
+     *
+     * We also assume that all data is sent on a single line.
+     *
+     * POST parameters are merged with possible GET (query) parameters and will override them in the case of conflict.
+     */
+    private void makePostParameters() {
+        if (baseRequest.getMethod() == HttpMethod.POST && !isPostParametersRead) {
+            try {
+                BufferedReader reader = getReader();
+                String line = reader.readLine();
+                parameters.putAll(splitQuery(line));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public String getParameter(String s) {
-        return queryParameters.get(s).get(0);
+        makePostParameters();
+        return parameters.get(s).get(0);
     }
 
     @Override
     public Enumeration getParameterNames() {
-        return Collections.enumeration(queryParameters.keySet());
+        makePostParameters();
+        return Collections.enumeration(parameters.keySet());
     }
 
     @Override
     public String[] getParameterValues(String s) {
-        List<String> ret = queryParameters.get(s);
+        makePostParameters();
+        List<String> ret = parameters.get(s);
         return ret.toArray(new String[ret.size()]);
     }
 
     @Override
     public Map getParameterMap() {
-        return queryParameters;
+        makePostParameters();
+        return parameters;
     }
 
     // END params

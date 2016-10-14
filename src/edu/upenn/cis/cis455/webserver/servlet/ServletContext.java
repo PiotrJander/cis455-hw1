@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class ServletContext implements javax.servlet.ServletContext {
 
     private String displayName;
     private HashMap<String, String> initParameters;
-    private HashMap<String, Object> attributes = new HashMap<>();
+    private final HashMap<String, Object> attributes = new HashMap<>();
 
     public ServletContext(String displayName, HashMap<String, String> initParameters) {
         this.displayName = displayName;
@@ -49,24 +50,36 @@ public class ServletContext implements javax.servlet.ServletContext {
 
     @Override
     public Enumeration getInitParameterNames() {
-        return new MapKeysEnumeration(initParameters);
+        return Collections.enumeration(initParameters.keySet());
     }
 
     @Override
     public Object getAttribute(String s) {
-        return attributes.get(s);
+        synchronized (attributes) {
+            return attributes.get(s);
+        }
     }
 
     @Override
     public Enumeration getAttributeNames() {
-        return new MapKeysEnumeration(attributes);
+        synchronized (attributes) {
+            return Collections.enumeration(attributes.keySet());
+        }
     }
 
     @Override
-    public void setAttribute(String s, Object o) { attributes.put(s, o); }
+    public void setAttribute(String s, Object o) {
+        synchronized (attributes) {
+            attributes.put(s, o);
+        }
+    }
 
     @Override
-    public void removeAttribute(String s) { attributes.remove(s); }
+    public void removeAttribute(String s) {
+        synchronized (attributes) {
+            attributes.remove(s);
+        }
+    }
 
     @Override
     public String getServletContextName() {
