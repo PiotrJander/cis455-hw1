@@ -21,46 +21,30 @@ import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 
-class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
+public class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
 
     private HashMap<String, Object> attributes = new HashMap<>();
     private String encoding = "ISO-8859-1";
     private Socket socket;
     private HttpRequest baseRequest;
     private Map<String, List<String>> parameters;
-    private boolean isPostParametersRead;
+    @SuppressWarnings("FieldCanBeLocal")
+    private boolean isPostParametersRead = false;
+    private String servletPath;
+    private String pathInfo;
 
     HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
         parameters = splitQuery(baseRequest.getUrl().getQuery());
     }
 
-    public HttpServletRequest(Socket socket, HttpRequest baseRequest) {
+    public HttpServletRequest(Socket socket, HttpRequest baseRequest, Match match) {
         this.socket = socket;
         this.baseRequest = baseRequest;
         parameters = splitQuery(baseRequest.getUrl().getQuery());
+        servletPath = match.getServletPath();
+        pathInfo = match.getPathInfo();
     }
-
-    // START pattern matching in paths
-
-    /**
-     * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
-     * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
-     */
-    @Override
-    public String getServletPath() {
-        return null;
-    }
-
-    /**
-     * Should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a “/”.
-     */
-    @Override
-    public String getPathInfo() {
-        return null;
-    }
-
-    // END pattern matching in paths
 
     // START session
 
@@ -244,7 +228,7 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
      * POST parameters are merged with possible GET (query) parameters and will override them in the case of conflict.
      */
     private void makePostParameters() {
-        if (baseRequest.getMethod() == HttpMethod.POST && !isPostParametersRead) {
+        if (!isPostParametersRead && baseRequest.getMethod() == HttpMethod.POST) {
             try {
                 BufferedReader reader = getReader();
                 String line = reader.readLine();
@@ -392,6 +376,27 @@ class HttpServletRequest implements javax.servlet.http.HttpServletRequest {
     }
 
     // END readers and streams
+
+    // START pattern matching in paths
+
+    /**
+     * Returns: a String containing the name or path of the servlet being called, as specified in the request URL,
+     * decoded, or an empty string if the servlet used to process the request is matched using the "/*" pattern.
+     */
+    @Override
+    public String getServletPath() {
+        return servletPath;
+    }
+
+    /**
+     * Should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a “/”.
+     */
+    @Override
+    public String getPathInfo() {
+        return pathInfo;
+    }
+
+    // END pattern matching in paths
 
     /**
      * @NotRequired

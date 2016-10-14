@@ -19,7 +19,7 @@ import java.util.Locale;
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
 
     private HttpResponse baseResponse;
-    private OutputStream out;
+    private PrintWriter out;
     private String characterEncoding = "ISO-8859-1";
     private String contentType = "text/html";
     private Locale locale;
@@ -27,7 +27,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     private StringWriter stringWriter;
     private boolean isCommited = false;
 
-    public HttpServletResponse(HttpResponse baseResponse, OutputStream out) {
+    public HttpServletResponse(HttpResponse baseResponse, PrintWriter out) {
         this.baseResponse = baseResponse;
         this.out = out;
     }

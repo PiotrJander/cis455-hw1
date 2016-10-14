@@ -23,6 +23,13 @@ class Match {
 
         if (!servletPath.equals(match.servletPath)) return false;
         return pathInfo != null ? pathInfo.equals(match.pathInfo) : match.pathInfo == null;
+    }
 
+    public String getServletPath() {
+        return servletPath;
+    }
+
+    public String getPathInfo() {
+        return pathInfo;
     }
 }

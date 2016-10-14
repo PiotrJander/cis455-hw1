@@ -1,7 +1,12 @@
 package edu.upenn.cis.cis455.webserver;
 
+import edu.upenn.cis.cis455.webserver.servlet.HttpServletRequest;
+import edu.upenn.cis.cis455.webserver.servlet.HttpServletResponse;
+import edu.upenn.cis.cis455.webserver.servlet.PatternServletPair;
 import org.apache.log4j.Logger;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -54,23 +59,43 @@ class Task {
                 sendContinueResponse(binaryOut, out);
             }
 
+            // TODO refactor to account for servlets
             worker.setCurrentRequestPath(request.getPath());
+
             response = new HttpResponse(request);
             response.initializeHeaders();
             response.checkForBadRequest();
             handleSpecialRequests();
 
-            // servlet vs static
-
-
-            setPath();
-            getItem();
-            response.send();
-            // end
+            PatternServletPair servletPair = HttpServer.getApplication().getMatchingServlet(request.getUrl().getPath());
+            if (servletPair == null) {
+                // no matching pattern for servlet
+                handleStaticItems();
+            } else {
+                handleServletRequest(servletPair, out);
+            }
         } catch (SendHttpResponseException e) {
             response.sendOverSocket(binaryOut, out);
             log.info("Response sent");
         }
+    }
+
+    private void handleServletRequest(PatternServletPair servletPair, PrintWriter out) throws IOException {
+        HttpServlet servlet = servletPair.getServlet();
+        HttpServletRequest servletRequest = new HttpServletRequest(socket, request, servletPair.getMatch());
+        HttpServletResponse servletResponse = new HttpServletResponse(response, out);
+        try {
+            servlet.service(servletRequest, servletResponse);
+        } catch (ServletException e) {
+            // TODO add to error log
+            e.printStackTrace();
+        }
+    }
+
+    private void handleStaticItems() throws SendHttpResponseException {
+        setPath();
+        getItem();
+        response.send();
     }
 
     private void sendContinueResponse(OutputStream binaryOut, PrintWriter out) throws IOException {

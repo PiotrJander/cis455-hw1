@@ -1,7 +1,9 @@
 package edu.upenn.cis.cis455.webserver;
 
+import edu.upenn.cis.cis455.webserver.servlet.PatternServletPair;
 import edu.upenn.cis.cis455.webserver.servlet.ServletConfig;
 import edu.upenn.cis.cis455.webserver.servlet.ServletContext;
+import edu.upenn.cis.cis455.webserver.servlet.UrlPattern;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,7 +17,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 class Application {
 
@@ -23,7 +28,7 @@ class Application {
     private Document webDotXml;
     private ServletContext servletContext;
     private HashMap<String, HttpServlet> servletNameToServletInstanceMapping = new HashMap<>();
-    private HashMap<String, HttpServlet> urlMapping = new HashMap<>();
+    private List<PatternServletPair> urlMapping = new ArrayList<>();
 
     Application(File webDotXmlSource) {
         this.webDotXmlSource = webDotXmlSource;
@@ -129,28 +134,35 @@ class Application {
         }
     }
 
-    /**
-     * TODO url as regex rather than as string?
-     */
     private void loadUrlMapping() throws WebDotXmlException {
         NodeList servletMappingSet = webDotXml.getElementsByTagName("servlet-mapping");
         for (int i = 0; i < servletMappingSet.getLength(); i++) {
             String servletName;
-            String urlPattern;
+            String urlPatternString;
             try {
                 Element servletMapping = (Element) servletMappingSet.item(i);
                 servletName = servletMapping.getElementsByTagName("servlet-name").item(0).getTextContent();
-                urlPattern = servletMapping.getElementsByTagName("url-pattern").item(0).getTextContent();
+                urlPatternString = servletMapping.getElementsByTagName("url-pattern").item(0).getTextContent();
             } catch (ClassCastException | NullPointerException e) {
                 throw new WebDotXmlException(e);
             }
 
             if (servletNameToServletInstanceMapping.containsKey(servletName)) {
-                urlMapping.put(urlPattern, servletNameToServletInstanceMapping.get(servletName));
+                HttpServlet servletInstance = servletNameToServletInstanceMapping.get(servletName);
+                urlMapping.add(new PatternServletPair(urlPatternString, servletInstance));
             } else {
                 throw new WebDotXmlException("No servlet for the servlet name in mapping.");
             }
         }
+    }
+
+    PatternServletPair getMatchingServlet(String path) {
+        for (PatternServletPair psp : urlMapping) {
+            if (psp.matches(path)) {
+                return psp;
+            }
+        }
+        return null;
     }
 
     ServletContext getServletContext() {
@@ -160,8 +172,6 @@ class Application {
     HttpServlet getServletByName(String s) {
         return servletNameToServletInstanceMapping.get(s);
     }
-
-    HttpServlet getServletByUrl(String url) { return urlMapping.get(url); }
 
     void destroyServlets() {
         for (HttpServlet servlet : servletNameToServletInstanceMapping.values()) {

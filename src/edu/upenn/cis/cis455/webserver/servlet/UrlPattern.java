@@ -1,8 +1,8 @@
 package edu.upenn.cis.cis455.webserver.servlet;
 
-abstract class UrlPattern {
+public abstract class UrlPattern {
 
-    static UrlPattern make(String path) {
+    public static UrlPattern make(String path) {
         if (path.endsWith("/*")) {
             return new UrlPatternWildcard(path);
         } else {
