@@ -8,15 +8,8 @@ class ResponsePrintWriter extends PrintWriter {
 
     private HttpServletResponse observer;
 
-    /**
-     * Creates a new PrintWriter.
-     *
-     * @param out       A character-output stream
-     * @param autoFlush A boolean; if true, the <tt>println</tt>,
-     *                  <tt>printf</tt>, or <tt>format</tt> methods will
-     */
-    ResponsePrintWriter(Writer out, boolean autoFlush, HttpServletResponse observer) {
-        super(out, autoFlush);
+    ResponsePrintWriter(Writer out, HttpServletResponse observer) {
+        super(out);
         this.observer = observer;
     }
 

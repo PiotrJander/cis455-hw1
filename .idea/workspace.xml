@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="Adds ResponsePrintWriter.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java" />
+    <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java" />
     </list>
     <ignored path="HW1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,7 +38,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HttpServletRequest.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="HttpServletRequest.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="795">
@@ -76,21 +74,31 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="HttpServletResponse.java" pinned="false" current-in-tab="false">
+          <file leaf-file-name="HttpServletResponse.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="769">
-                  <caret line="72" column="60" selection-start-line="72" selection-start-column="60" selection-end-line="72" selection-end-column="60" />
+                <state relative-caret-position="994">
+                  <caret line="208" column="17" selection-start-line="208" selection-start-column="17" selection-end-line="208" selection-end-column="17" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#1320#1321#0" expanded="true" />
-                    <element signature="e#1344#1345#0" expanded="true" />
-                    <element signature="e#1396#1397#0" expanded="true" />
-                    <element signature="e#1469#1470#0" expanded="true" />
-                    <element signature="e#1773#1774#0" expanded="true" />
-                    <element signature="e#1797#1798#0" expanded="true" />
-                    <element signature="e#3034#3035#0" expanded="true" />
-                    <element signature="e#3070#3071#0" expanded="true" />
+                    <element signature="e#1641#1642#0" expanded="true" />
+                    <element signature="e#1674#1675#0" expanded="true" />
+                    <element signature="e#3119#3120#0" expanded="true" />
+                    <element signature="e#3155#3156#0" expanded="true" />
+                    <element signature="e#3425#3426#0" expanded="true" />
+                    <element signature="e#3478#3479#0" expanded="true" />
+                    <element signature="e#4020#4021#0" expanded="true" />
+                    <element signature="e#4065#4066#0" expanded="true" />
+                    <element signature="e#4129#4130#0" expanded="true" />
+                    <element signature="e#4174#4175#0" expanded="true" />
+                    <element signature="e#4237#4238#0" expanded="true" />
+                    <element signature="e#4286#4287#0" expanded="true" />
+                    <element signature="e#4349#4350#0" expanded="true" />
+                    <element signature="e#4398#4399#0" expanded="true" />
+                    <element signature="e#4455#4456#0" expanded="true" />
+                    <element signature="e#4504#4505#0" expanded="true" />
+                    <element signature="e#4807#4808#0" expanded="true" />
+                    <element signature="e#4841#4842#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -152,8 +160,8 @@
               <file leaf-file-name="ResponsePrintWriter.java" pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="435">
-                      <caret line="29" column="23" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
+                    <state relative-caret-position="150">
+                      <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
                       <folding>
                         <element signature="imports" expanded="true" />
                       </folding>
@@ -168,8 +176,8 @@
               <file leaf-file-name="scratch_1.txt" pinned="false" current-in-tab="true">
                 <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="45">
-                      <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+                    <state relative-caret-position="75">
+                      <caret line="5" column="82" selection-start-line="5" selection-start-column="82" selection-end-line="5" selection-end-column="82" />
                       <folding />
                     </state>
                   </provider>
@@ -260,10 +268,10 @@
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpSession.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
       </list>
     </option>
   </component>
@@ -804,7 +812,7 @@
       <workItem from="1476052576156" duration="403000" />
       <workItem from="1476053175574" duration="30206000" />
       <workItem from="1476312905858" duration="10372000" />
-      <workItem from="1476412596208" duration="6896000" />
+      <workItem from="1476412596208" duration="7845000" />
     </task>
     <task id="LOCAL-00001" summary="Added IntelliJ files">
       <created>1474751894616</created>
@@ -1121,7 +1129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1476415217345</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Adds ResponsePrintWriter. Impls methods in response">
+      <created>1476460896123</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1476460896123</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1157,7 +1172,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110148000" />
+    <option name="totallyTimeSpent" value="111097000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1228,7 +1243,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Tests host checks. Adds HTTP methods. Streamlines error handling." />
     <MESSAGE value="Adds basic response headers" />
     <MESSAGE value="Adds support for Last-Modified, Content-Type, and Content-Length" />
     <MESSAGE value="Adds support for Last-Modified. Continue status response. Byte[] response payload" />
@@ -1253,7 +1267,8 @@
     <MESSAGE value="Implemented body readers" />
     <MESSAGE value="Adds header methods to response" />
     <MESSAGE value="Adds getting HTTP status by its int code. Adds body message to HTTP error pages. Adds status and header setting methods to response." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds getting HTTP status by its int code. Adds body message to HTTP error pages. Adds status and header setting methods to response." />
+    <MESSAGE value="Adds ResponsePrintWriter. Impls methods in response" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds ResponsePrintWriter. Impls methods in response" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1626,34 +1641,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="23" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="769">
-          <caret line="72" column="60" selection-start-line="72" selection-start-column="60" selection-end-line="72" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1320#1321#0" expanded="true" />
-            <element signature="e#1344#1345#0" expanded="true" />
-            <element signature="e#1396#1397#0" expanded="true" />
-            <element signature="e#1469#1470#0" expanded="true" />
-            <element signature="e#1773#1774#0" expanded="true" />
-            <element signature="e#1797#1798#0" expanded="true" />
-            <element signature="e#3034#3035#0" expanded="true" />
-            <element signature="e#3070#3071#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -1686,14 +1673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="795">
@@ -1710,6 +1689,52 @@
             <element signature="e#7436#7437#0" expanded="true" />
             <element signature="e#8002#8003#0" expanded="true" />
             <element signature="e#8060#8061#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="82" selection-start-line="5" selection-start-column="82" selection-end-line="5" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="994">
+          <caret line="208" column="17" selection-start-line="208" selection-start-column="17" selection-end-line="208" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1641#1642#0" expanded="true" />
+            <element signature="e#1674#1675#0" expanded="true" />
+            <element signature="e#3119#3120#0" expanded="true" />
+            <element signature="e#3155#3156#0" expanded="true" />
+            <element signature="e#3425#3426#0" expanded="true" />
+            <element signature="e#3478#3479#0" expanded="true" />
+            <element signature="e#4020#4021#0" expanded="true" />
+            <element signature="e#4065#4066#0" expanded="true" />
+            <element signature="e#4129#4130#0" expanded="true" />
+            <element signature="e#4174#4175#0" expanded="true" />
+            <element signature="e#4237#4238#0" expanded="true" />
+            <element signature="e#4286#4287#0" expanded="true" />
+            <element signature="e#4349#4350#0" expanded="true" />
+            <element signature="e#4398#4399#0" expanded="true" />
+            <element signature="e#4455#4456#0" expanded="true" />
+            <element signature="e#4504#4505#0" expanded="true" />
+            <element signature="e#4807#4808#0" expanded="true" />
+            <element signature="e#4841#4842#0" expanded="true" />
           </folding>
         </state>
       </provider>

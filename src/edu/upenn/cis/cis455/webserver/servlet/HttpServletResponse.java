@@ -23,8 +23,8 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     private String characterEncoding = "ISO-8859-1";
     private String contentType = "text/html";
     private Locale locale;
-    private int bufferSize;
-    private StringWriter stringWriter = new StringWriter(bufferSize);
+    private int bufferSize = 0;
+    private StringWriter stringWriter;
     private boolean isCommited = false;
 
     public HttpServletResponse(HttpResponse baseResponse, OutputStream out) {
@@ -37,20 +37,28 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
 
     }
 
-    // START writing
+    // ****************************************************************************************************************
+    // DONE
+    // ****************************************************************************************************************
+
+    // START committing
 
     private void commit() {
-        baseResponse.setPayload(stringWriter.toString());
         isCommited = true;
     }
 
-    void notifyFlush() {
-        commit();
+    @Override
+    public boolean isCommitted() {
+        return isCommited;
     }
 
+    // END committing
+
+    // START writing
+
     @Override
-    public PrintWriter getWriter() {
-        return new ResponsePrintWriter(stringWriter, false, this);
+    public int getBufferSize() {
+        return bufferSize;
     }
 
     @Override
@@ -60,12 +68,24 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     }
 
     @Override
-    public int getBufferSize() {
-        return bufferSize;
+    public PrintWriter getWriter() {
+        if (stringWriter == null) {
+            stringWriter = bufferSize == 0 ? new StringWriter() : new StringWriter(bufferSize);
+        }
+        return new ResponsePrintWriter(stringWriter, this);
+    }
+
+    /**
+     * Listens for flushing the PrintWriter.
+     */
+    void notifyFlush() {
+        baseResponse.setPayload(stringWriter.toString());
+        commit();
     }
 
     @Override
     public void flushBuffer() {
+        baseResponse.setPayload(stringWriter.toString());
         commit();
     }
 
@@ -76,11 +96,6 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     }
 
     @Override
-    public boolean isCommitted() {
-        return isCommited;
-    }
-
-    @Override
     public void reset() throws IllegalStateException {
         if (isCommitted())  throw new IllegalStateException();
         baseResponse.setStatus(HttpStatus.OK);
@@ -88,17 +103,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         resetBuffer();
     }
 
-    // ****************************************************************************************************************
-    // DONE
-    // ****************************************************************************************************************
-
-    /**
-     * Should return “text/html” by default, and the results of setContentType if it was previously called.
-     */
-    @Override
-    public String getContentType() {
-        return contentType;
-    }
+    // END writing
 
     @Override
     public String getCharacterEncoding() {
@@ -167,13 +172,18 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         setIntHeader("Content-Length", i);
     }
 
-    /**
-     * TODO no effect if writing started
-     */
     @Override
     public void setContentType(String s) {
         contentType = s;
         setHeader("Content-Type", s);
+    }
+
+    /**
+     * Should return “text/html” by default, and the results of setContentType if it was previously called.
+     */
+    @Override
+    public String getContentType() {
+        return contentType;
     }
 
     // END headers
