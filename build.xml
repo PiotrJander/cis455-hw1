@@ -112,10 +112,11 @@
             	<path location="${resources.dir}"/>
 			</classpath>
             <arg value="8080"/>
-            <arg value="/media/sf_shared/hw1/www"/>
+            <arg value="${build.dir}${file.separator}www"/>
+            <arg value="${conf.dir}${file.separator}web.xml"/>
         </java>
 		<sequential>
-			<sleep milliseconds="500"/>
+			<sleep milliseconds="2000"/>
 			<exec executable="curl">
 			        <arg line="http://localhost:8080/index.html"/>
 		    </exec>
@@ -125,5 +126,23 @@
 			</sequential>
 		</parallel>
 	</target>
+
+    <target name="start" depends="build">
+        <parallel>
+            <java classname="${main-class}" fork="true">
+                <jvmarg value="-Xdebug" />
+                <!--<jvmarg>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5432</jvmarg>-->
+                <jvmarg value="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005" />
+                <classpath>
+                    <path refid="classpath"/>
+                    <path location="${build.target.dir}${file.separator}WEB-INF${file.separator}lib${file.separator}${ant.project.name}.jar"/>
+                    <path location="${resources.dir}"/>
+                </classpath>
+                <arg value="8080"/>
+                <arg value="${build.dir}${file.separator}www"/>
+                <arg value="${conf.dir}${file.separator}web.xml"/>
+            </java>
+        </parallel>
+    </target>
 
 </project>

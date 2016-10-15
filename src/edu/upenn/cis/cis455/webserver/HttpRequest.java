@@ -130,7 +130,7 @@ public class HttpRequest {
             URL url = new URL(context, urlString);
 
             // now if absolute URL was given, the context was overriden; we must check for agreement with the Host header
-            if (!Objects.equals(url.getHost(), host)) {
+            if (!host.startsWith(url.getHost())) {
                 throw new BadRequestException("'Host' header and the host in the URL don't agree");
             }
 
@@ -180,7 +180,8 @@ public class HttpRequest {
      * Returns the first value for the header (usually there's just one value).
      */
     public String getHeaderValue(String headerName) {
-        return httpRequestHeaders.get(headerName).get(0);
+        List<String> values = httpRequestHeaders.get(headerName);
+        return values == null ? null : values.get(0);
     }
 
     String getBadRequestErrorMessage() {

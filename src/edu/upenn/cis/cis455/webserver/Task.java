@@ -60,14 +60,14 @@ class Task {
             }
 
             // TODO refactor to account for servlets
-            worker.setCurrentRequestPath(request.getPath());
+//            worker.setCurrentRequestPath(request.getPath());
 
             response = new HttpResponse(request);
             response.initializeHeaders();
             response.checkForBadRequest();
             handleSpecialRequests();
 
-            PatternServletPair servletPair = HttpServer.getApplication().getMatchingServlet(request.getUrl().getPath());
+            PatternServletPair servletPair = getMatchingServlet();
             if (servletPair == null) {
                 // no matching pattern for servlet
                 handleStaticItems();
@@ -78,6 +78,10 @@ class Task {
             response.sendOverSocket(binaryOut, out);
             log.info("Response sent");
         }
+    }
+
+    private PatternServletPair getMatchingServlet() {
+        return HttpServer.getApplication().getMatchingServlet(request.getUrl().getPath());
     }
 
     private void handleServletRequest(PatternServletPair servletPair) throws SendHttpResponseException {

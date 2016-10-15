@@ -5,8 +5,9 @@ SEAS login: piotr@sas.upenn.edu
 
 Which features did you implement? 
   (list features, or write 'Entire assignment')
-  All features excluding closing idle connections,
-  If-Modified-Since, and If-Unmodified-Since.
+  All features excluding
+  (Milestone 1) closing idle connections, If-Modified-Since, and If-Unmodified-Since.
+  (Milestone 2) sessions and cookies, error log in /control, servlet names in /control, error 405 for unsupported methods
 
 Did you complete any extra-credit tasks? If so, which ones?
   (list extra-credit tasks)
@@ -20,10 +21,12 @@ Did you personally write _all_ the code you are submitting
 (other than code from the course web page)?
   [x] Yes
   [ ] No
+  (with the exception of two short methods for parsing application/x-www-urlencoded-form borrowed from stackoverflow)
 
 Did you copy any code from the Internet, or from classmates?
   [ ] Yes
   [x] No
+  (with the exception of two short methods for parsing application/x-www-urlencoded-form borrowed from stackoverflow)
 
 Did you collaborate with anyone on this assignment?
   [ ] Yes

@@ -249,7 +249,8 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     @Override
     public String getParameter(String s) {
         makePostParameters();
-        return parameters.get(s).get(0);
+        List<String> values = parameters.get(s);
+        return values == null ? null : values.get(0);
     }
 
     @Override
