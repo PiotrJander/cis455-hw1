@@ -22,6 +22,8 @@ public class HttpResponse {
 
     private byte[] payload = new byte[0];
 
+    public HttpResponse() {}
+
     HttpResponse(HttpRequest req) {
         this.request = req;
 

@@ -82,8 +82,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
      * Listens for flushing the PrintWriter.
      */
     void notifyFlush() {
-        baseResponse.setPayload(stringWriter.toString());
-        commit();
+        flushBuffer();
     }
 
     @Override
@@ -104,6 +103,10 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         baseResponse.setStatus(HttpStatus.OK);
         baseResponse.resetHeaders();
         resetBuffer();
+    }
+
+    public StringWriter getStringWriter() {
+        return stringWriter;
     }
 
     // END writing
@@ -215,6 +218,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     @Override
     public void sendRedirect(String s) throws IOException, IllegalStateException {
         if (isCommitted())  throw new IllegalStateException();
+        baseResponse.setStatus(HttpStatus.FOUND);
         setHeader("Location", (new URL(baseResponse.getRequest().getUrl(), s)).toString());
         commit();
     }

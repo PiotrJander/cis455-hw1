@@ -87,7 +87,7 @@ public class HttpRequest {
                 String value = m.group("value");
 
                 // deal with comma-separated values
-                List<String> values = Arrays.asList(value.split(","));
+                List<String> values = new ArrayList<>(Arrays.asList(value.split(",")));
                 if (httpRequestHeaders.containsKey(name)) {
                     httpRequestHeaders.get(name).addAll(values);
                 } else {

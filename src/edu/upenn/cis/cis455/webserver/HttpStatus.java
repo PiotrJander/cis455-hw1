@@ -3,6 +3,7 @@ package edu.upenn.cis.cis455.webserver;
 public enum HttpStatus {
     CONTINUE(100, "Continue"),
     OK(200, "OK"),
+    FOUND(302, "Found"),
     NOT_MODIFIED(304, "Not Modified"),
     BAD_REQUEST(400, "Bad Request"),
     NOT_FOUND(404, "Not Found"),

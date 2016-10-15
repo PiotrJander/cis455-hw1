@@ -51,8 +51,4 @@ public class ApplicationTest extends TestCase {
         assertEquals(servletConfig.getServletContext().getMajorVersion(), 2);
         assertEquals(servletConfig.getInitParameter("baz"), "xyz");
     }
-
-    public void testUrlMapping() throws Exception {
-        assertEquals(application.getServletByUrl("calculator/").getServletName(), "CalculatorServlet");
-    }
 }

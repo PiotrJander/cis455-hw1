@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2772918d-b249-43ff-b07a-0bac467ba49f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/SendHttpResponseException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpRequestHeadersTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponseWritingTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" afterPath="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" afterPath="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
     </list>
     <ignored path="HW1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,21 +34,11 @@
     <splitter split-orientation="horizontal" split-proportion="0.4531401">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="web.xml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/conf/web.xml">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="585">
-                  <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="HttpServletRequest.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
+                <state relative-caret-position="427">
+                  <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
                     <element signature="e#1002#1038#0" expanded="true" />
@@ -53,39 +47,17 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Match.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/Match.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="435">
-                  <caret line="31" column="33" selection-start-line="31" selection-start-column="33" selection-end-line="31" selection-end-column="33" />
-                  <folding>
-                    <element signature="e#725#726#0" expanded="true" />
-                    <element signature="e#759#760#0" expanded="true" />
-                    <element signature="e#825#826#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Application.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="928">
-                  <caret line="164" column="20" selection-start-line="164" selection-start-column="20" selection-end-line="164" selection-end-column="20" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
           <file leaf-file-name="HttpServletResponse.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="270">
-                  <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
+                <state relative-caret-position="614">
+                  <caret line="224" column="0" selection-start-line="224" selection-start-column="0" selection-end-line="224" selection-end-column="0" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#976#977#0" expanded="true" />
-                    <element signature="e#1024#1025#0" expanded="true" />
+                    <element signature="e#2278#2279#0" expanded="true" />
+                    <element signature="e#2307#2308#0" expanded="true" />
+                    <element signature="e#2915#2916#0" expanded="true" />
+                    <element signature="e#2950#2951#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -97,11 +69,31 @@
         <splitter split-orientation="vertical" split-proportion="0.7890511">
           <split-first>
             <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-              <file leaf-file-name="HttpRequest.java" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java">
+              <file leaf-file-name="ApplicationTest.java" pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="1404">
-                      <caret line="135" column="73" selection-start-line="135" selection-start-column="49" selection-end-line="135" selection-end-column="73" />
+                    <state relative-caret-position="705">
+                      <caret line="53" column="1" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="HttpResponse.java" pinned="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="353">
+                      <caret line="90" column="24" selection-start-line="90" selection-start-column="24" selection-end-line="90" selection-end-column="24" />
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="HttpServletResponseWritingTest.java" pinned="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponseWritingTest.java">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state relative-caret-position="495">
+                      <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
                       <folding>
                         <element signature="imports" expanded="true" />
                       </folding>
@@ -109,48 +101,11 @@
                   </provider>
                 </entry>
               </file>
-              <file leaf-file-name="HttpResponse.java" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="833">
-                      <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
-                      <folding>
-                        <element signature="e#2870#2871#0" expanded="true" />
-                        <element signature="e#2957#2958#0" expanded="true" />
-                        <element signature="e#3874#3875#0" expanded="true" />
-                        <element signature="e#3910#3911#0" expanded="true" />
-                        <element signature="e#3949#3950#0" expanded="true" />
-                        <element signature="e#3979#3980#0" expanded="true" />
-                      </folding>
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="HttpStatus.java" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="210">
-                      <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="HtmlTemplate.java" pinned="false" current-in-tab="false">
-                <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HtmlTemplate.java">
-                  <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="210">
-                      <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
-                      <folding />
-                    </state>
-                  </provider>
-                </entry>
-              </file>
-              <file leaf-file-name="Task.java" pinned="false" current-in-tab="true">
+              <file leaf-file-name="Task.java" pinned="false" current-in-tab="false">
                 <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="585">
-                      <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
+                    <state relative-caret-position="588">
+                      <caret line="103" column="53" selection-start-line="103" selection-start-column="53" selection-end-line="103" selection-end-column="53" />
                       <folding />
                     </state>
                   </provider>
@@ -191,8 +146,8 @@
       <list>
         <option value="Enum" />
         <option value="JUnit4 Test Class" />
-        <option value="JUnit3 Test Class" />
         <option value="Class" />
+        <option value="JUnit3 Test Class" />
       </list>
     </option>
   </component>
@@ -228,20 +183,17 @@
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Worker.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/TaskTest.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpServerTest.java" />
-        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
         <option value="$PROJECT_DIR$/conf/web.xml" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequestHeadersTest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpVersion.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpMethod.java" />
         <option value="$PROJECT_DIR$/src/Foo.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletConfig.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletInputStream.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletInputStreamImpl.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpSession.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ServletContext.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpServer.java" />
         <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/UrlPatternTest.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/UrlPatternLiteral.java" />
@@ -251,11 +203,16 @@
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/PatternServletPair.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Application.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/Match.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/SendHttpResponseException.java" />
-        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" />
         <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java" />
+        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java" />
+        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpRequestHeadersTest.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java" />
+        <option value="$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponseWritingTest.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java" />
+        <option value="$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java" />
       </list>
     </option>
   </component>
@@ -503,67 +460,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UrlPatternTest">
-    <configuration default="false" name="ApplicationTest.testContext" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="HW1" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
-      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.ApplicationTest" />
-      <option name="METHOD_NAME" value="testContext" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="ApplicationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="HW1" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
-      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.ApplicationTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="false" name="ApplicationTest.testUrlMapping" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="HW1" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
-      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.ApplicationTest" />
-      <option name="METHOD_NAME" value="testUrlMapping" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.HttpServletResponseWritingTest">
     <configuration default="false" name="HttpServletRequestHeadersTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="HW1" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -590,6 +487,66 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver.servlet" />
       <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.servlet.UrlPatternTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="HttpRequestHeadersTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HW1" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver" />
+      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.HttpRequestHeadersTest" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="HttpServletResponseWritingTest.testWriteToResponse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HW1" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver.servlet" />
+      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.servlet.HttpServletResponseWritingTest" />
+      <option name="METHOD_NAME" value="testWriteToResponse" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="false" name="HttpServletResponseWritingTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="HW1" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="edu.upenn.cis.cis455.webserver.servlet" />
+      <option name="MAIN_CLASS_NAME" value="edu.upenn.cis.cis455.webserver.servlet.HttpServletResponseWritingTest" />
       <option name="METHOD_NAME" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -756,19 +713,19 @@
     <list size="7">
       <item index="0" class="java.lang.String" itemvalue="Application.Foo" />
       <item index="1" class="java.lang.String" itemvalue="Application.Server" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testUrlMapping" />
-      <item index="5" class="java.lang.String" itemvalue="JUnit.HttpServletRequestHeadersTest" />
-      <item index="6" class="java.lang.String" itemvalue="JUnit.UrlPatternTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.HttpServletRequestHeadersTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.UrlPatternTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.HttpRequestHeadersTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.HttpServletResponseWritingTest.testWriteToResponse" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.HttpServletResponseWritingTest" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.UrlPatternTest" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.HttpServletRequestHeadersTest" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testUrlMapping" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.ApplicationTest" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.ApplicationTest.testContext" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.HttpServletResponseWritingTest" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.HttpServletResponseWritingTest.testWriteToResponse" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.HttpRequestHeadersTest" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.UrlPatternTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.HttpServletRequestHeadersTest" />
       </list>
     </recent_temporary>
     <configuration name="&lt;template&gt;" type="TestNG" default="true" selected="false">
@@ -796,14 +753,7 @@
       <workItem from="1476052576156" duration="403000" />
       <workItem from="1476053175574" duration="30206000" />
       <workItem from="1476312905858" duration="10372000" />
-      <workItem from="1476412596208" duration="17841000" />
-    </task>
-    <task id="LOCAL-00003" summary="Thread pool set up, with a separate daemon thread">
-      <created>1474849156086</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1474849156086</updated>
+      <workItem from="1476412596208" duration="19919000" />
     </task>
     <task id="LOCAL-00004" summary="Merged the daemon thread into the main thread">
       <created>1474849275324</created>
@@ -1141,43 +1091,50 @@
       <option name="project" value="LOCAL" />
       <updated>1476488117326</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="Sends internal server error when things go wrong. Actually sends the servlet response.">
+      <created>1476488931913</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1476488931914</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="HttpServerTest - 2016.10.10 at 21h 35m 00s.xml">
-      <configuration name="HttpServerTest" configurationId="JUnit" />
+    <history-entry file="HttpRequestHeadersTest - 2016.10.14 at 20h 17m 48s.xml">
+      <configuration name="HttpRequestHeadersTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServerTest - 2016.10.10 at 21h 35m 07s.xml">
-      <configuration name="HttpServerTest" configurationId="JUnit" />
+    <history-entry file="HttpRequestHeadersTest - 2016.10.14 at 20h 19m 57s.xml">
+      <configuration name="HttpRequestHeadersTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServerTest - 2016.10.10 at 21h 35m 48s.xml">
-      <configuration name="HttpServerTest" configurationId="JUnit" />
+    <history-entry file="HttpRequestHeadersTest - 2016.10.14 at 20h 20m 10s.xml">
+      <configuration name="HttpRequestHeadersTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServerTest - 2016.10.10 at 21h 36m 04s.xml">
-      <configuration name="HttpServerTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest - 2016.10.14 at 20h 31m 38s.xml">
+      <configuration name="HttpServletResponseWritingTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServletRequestHeadersTest - 2016.10.11 at 22h 29m 57s.xml">
-      <configuration name="HttpServletRequestHeadersTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest - 2016.10.14 at 20h 32m 42s.xml">
+      <configuration name="HttpServletResponseWritingTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="HttpServletRequestHeadersTest - 2016.10.11 at 22h 32m 09s.xml">
-      <configuration name="HttpServletRequestHeadersTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest - 2016.10.14 at 20h 32m 48s.xml">
+      <configuration name="HttpServletResponseWritingTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UrlPatternTest - 2016.10.14 at 18h 46m 11s.xml">
-      <configuration name="UrlPatternTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest - 2016.10.14 at 20h 32m 54s.xml">
+      <configuration name="HttpServletResponseWritingTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UrlPatternTest - 2016.10.14 at 18h 47m 45s.xml">
-      <configuration name="UrlPatternTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest_testWriting - 2016.10.14 at 20h 30m 10s.xml">
+      <configuration name="HttpServletResponseWritingTest.testWriting" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UrlPatternTest - 2016.10.14 at 18h 47m 51s.xml">
-      <configuration name="UrlPatternTest" configurationId="JUnit" />
+    <history-entry file="HttpServletResponseWritingTest_testWriting - 2016.10.14 at 20h 30m 20s.xml">
+      <configuration name="HttpServletResponseWritingTest.testWriting" configurationId="JUnit" />
     </history-entry>
     <history-entry file="UrlPatternTest - 2016.10.14 at 18h 48m 03s.xml">
       <configuration name="UrlPatternTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="121093000" />
+    <option name="totallyTimeSpent" value="123171000" />
   </component>
   <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
@@ -1248,7 +1205,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Rolls back to jUnit 3" />
     <MESSAGE value="Run ant builds!" />
     <MESSAGE value="Refactored MS 1" />
     <MESSAGE value="Parses and extracts information from web.xml" />
@@ -1273,7 +1229,8 @@
     <MESSAGE value="Adds status 405. Makes Context attrs thread safe. Supports POST form data." />
     <MESSAGE value="Destroys servlets on shutdown. Matches URL patterns." />
     <MESSAGE value="Distinguishes between static and servlet requests. Adds getMatchingServlet. Implements getServletPath and getPathInfo." />
-    <option name="LAST_COMMIT_MESSAGE" value="Distinguishes between static and servlet requests. Adds getMatchingServlet. Implements getServletPath and getPathInfo." />
+    <MESSAGE value="Sends internal server error when things go wrong. Actually sends the servlet response." />
+    <option name="LAST_COMMIT_MESSAGE" value="Sends internal server error when things go wrong. Actually sends the servlet response." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1315,20 +1272,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/src.zip!/java/net/SocketInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/README">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -1516,14 +1459,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="55" column="103" selection-start-line="55" selection-start-column="103" selection-end-line="55" selection-end-column="103" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequestHeadersTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="495">
@@ -1556,14 +1491,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="30" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/servlet-api.jar!/javax/servlet/Servlet.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1589,16 +1516,6 @@
         <state relative-caret-position="585">
           <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1685,27 +1602,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="44" column="45" selection-start-line="44" selection-start-column="45" selection-end-line="44" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1002#1038#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1404">
-          <caret line="135" column="73" selection-start-line="135" selection-start-column="49" selection-end-line="135" selection-end-column="73" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/SendHttpResponseException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -1714,38 +1610,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java">
+    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/HttpRequestHeadersTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="833">
-          <caret line="134" column="0" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
+        <state relative-caret-position="210">
+          <caret line="14" column="47" selection-start-line="14" selection-start-column="47" selection-end-line="14" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="89" column="54" selection-start-line="89" selection-start-column="54" selection-end-line="89" selection-end-column="54" />
           <folding>
-            <element signature="e#2870#2871#0" expanded="true" />
-            <element signature="e#2957#2958#0" expanded="true" />
-            <element signature="e#3874#3875#0" expanded="true" />
-            <element signature="e#3910#3911#0" expanded="true" />
-            <element signature="e#3949#3950#0" expanded="true" />
-            <element signature="e#3979#3980#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/ResponsePrintWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="150">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="110" column="20" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1002#1038#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/ApplicationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="53" column="1" selection-start-line="53" selection-start-column="1" selection-end-line="53" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponseWritingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
           <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#976#977#0" expanded="true" />
-            <element signature="e#1024#1025#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpStatus.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/Task.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="92" column="9" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
+        <state relative-caret-position="588">
+          <caret line="103" column="53" selection-start-line="103" selection-start-column="53" selection-end-line="103" selection-end-column="53" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/HttpResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="90" column="24" selection-start-line="90" selection-start-column="24" selection-end-line="90" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/edu/upenn/cis/cis455/webserver/servlet/HttpServletResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="614">
+          <caret line="224" column="0" selection-start-line="224" selection-start-column="0" selection-end-line="224" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2278#2279#0" expanded="true" />
+            <element signature="e#2307#2308#0" expanded="true" />
+            <element signature="e#2915#2916#0" expanded="true" />
+            <element signature="e#2950#2951#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

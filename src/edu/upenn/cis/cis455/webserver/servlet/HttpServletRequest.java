@@ -113,8 +113,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     @Override
     public long getDateHeader(String s) {
         String dateString = getHeader(s);
-        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-        ZonedDateTime date = ZonedDateTime.parse(dateString, formatter);
+        ZonedDateTime date = ZonedDateTime.parse(dateString, DateTimeFormatter.RFC_1123_DATE_TIME);
         return date.toInstant().toEpochMilli();
     }
 
@@ -220,11 +219,11 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     /**
      * POST form data is only parsed on demand, as it inferferes with `getReader`.
-     *
+     * <p>
      * We assume that form data is sent as application/x-www-form-urlencoded.
-     *
+     * <p>
      * We also assume that all data is sent on a single line.
-     *
+     * <p>
      * POST parameters are merged with possible GET (query) parameters and will override them in the case of conflict.
      */
     private void makePostParameters() {
