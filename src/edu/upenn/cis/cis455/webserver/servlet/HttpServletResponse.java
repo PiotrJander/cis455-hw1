@@ -185,7 +185,7 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
     }
 
     /**
-     * Should return “text/html” by default, and the results of setContentType if it was previously called.
+     * Should return "text/html" by default, and the results of setContentType if it was previously called.
      */
     @Override
     public String getContentType() {

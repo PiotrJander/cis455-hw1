@@ -173,7 +173,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     // START url parts
 
     /**
-     * Should return the HTTP GET query string, i.e., the portion after the “?” when a GET form is posted.
+     * Should return the HTTP GET query string, i.e., the portion after the "?" when a GET form is posted.
      */
     @Override
     public String getQueryString() {
@@ -324,7 +324,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * Should return “http”.
+     * Should return "http".
      */
     @Override
     public String getScheme() {
@@ -342,7 +342,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * Should return “ISO-8859-1” by default, and the results of setCharacterEncoding if it was previously called.
+     * Should return "ISO-8859-1" by default, and the results of setCharacterEncoding if it was previously called.
      */
     @Override
     public String getCharacterEncoding() {
@@ -363,7 +363,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * Should always return BASIC AUTH (“BASIC”)
+     * Should always return BASIC AUTH ("BASIC")
      */
     @Override
     public String getAuthType() {
@@ -401,7 +401,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     }
 
     /**
-     * Should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a “/”.
+     * Should always return the remainder of the URL request after the portion matched by the url-pattern in web-xml. It starts with a "/".
      */
     @Override
     public String getPathInfo() {
