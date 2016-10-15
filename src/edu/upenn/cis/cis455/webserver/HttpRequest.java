@@ -145,10 +145,6 @@ public class HttpRequest {
             this.method = HttpMethod.valueOf(method);
     }
 
-//    String getPath() {
-//        return urlString;
-//    }
-
     boolean isOk() {
         return ok;
     }

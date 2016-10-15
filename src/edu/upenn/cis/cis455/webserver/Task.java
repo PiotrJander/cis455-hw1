@@ -59,9 +59,6 @@ class Task {
                 sendContinueResponse(binaryOut, out);
             }
 
-            // TODO refactor to account for servlets
-//            worker.setCurrentRequestPath(request.getPath());
-
             response = new HttpResponse(request);
             response.initializeHeaders();
             response.checkForBadRequest();
@@ -86,6 +83,7 @@ class Task {
 
     private void handleServletRequest(PatternServletPair servletPair) throws SendHttpResponseException {
         HttpServlet servlet = servletPair.getServlet();
+        worker.setCurrentTask(servlet.getServletName());
         HttpServletRequest servletRequest = new HttpServletRequest(socket, request, servletPair.getMatch());
         HttpServletResponse servletResponse = new HttpServletResponse(response);
         try {
@@ -99,6 +97,7 @@ class Task {
     }
 
     private void handleStaticItems() throws SendHttpResponseException {
+        worker.setCurrentTask(request.getPath());
         setPath();
         getItem();
         response.send();
@@ -127,7 +126,7 @@ class Task {
         html.appendToBody("<h2>Thread pool</h2>" + "<dl>");
         for (Worker worker : HttpServer.getWorkersPool()) {
             html.appendToBody("<dt>" + worker.getWorkerId() + "</dt>");
-            String path = worker.getCurrentRequestPath();
+            String path = worker.getCurrentTask();
             String status = path == null ? "<i>waiting</i>" : path;
             html.appendToBody("<dd>" + status + "</dd>");
         }
@@ -139,11 +138,9 @@ class Task {
     private void setPath() throws SendHttpResponseException {
         Path root = HttpServer.getRootDirectory();
         try {
-            // TODO how come path is good here? no need to strip the leading slash?
             filePath = root.resolve(request.getPath().substring(1)).toRealPath(LinkOption.NOFOLLOW_LINKS);
             if (!filePath.startsWith(root)) {
-                // TODO why this exception?
-                throw new IllegalArgumentException();
+                throw new InvalidPathException(filePath.toString(), "Can't access directories outside www");
             }
         } catch (InvalidPathException | IOException e) {
             response.error(HttpStatus.NOT_FOUND).send();

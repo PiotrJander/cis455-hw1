@@ -10,7 +10,7 @@ class Worker extends Thread {
     private BlockingQueue<TcpRequest> queue;
     private int workerId;
 
-    private String currentRequestPath;
+    private String currentTask;
 
     Worker(BlockingQueue<TcpRequest> queue, int workerId) {
         this.queue = queue;
@@ -24,7 +24,7 @@ class Worker extends Thread {
                 Task task = new Task(queue.take(), this);
                 log.info("Task was taken from the queue");
                 task.run();
-                currentRequestPath = null;
+                currentTask = null;
             } catch (InterruptedException e) {
                 // the worker was interrupted; stop
                 log.info("Stopping worker " + workerId);
@@ -42,11 +42,11 @@ class Worker extends Thread {
     /**
      * This is included so that the worker's job can be displayed.
      */
-    void setCurrentRequestPath(String currentRequestPath) {
-        this.currentRequestPath = currentRequestPath;
+    void setCurrentTask(String currentTask) {
+        this.currentTask = currentTask;
     }
 
-    String getCurrentRequestPath() {
-        return currentRequestPath;
+    String getCurrentTask() {
+        return currentTask;
     }
 }
