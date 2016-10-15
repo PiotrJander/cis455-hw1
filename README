@@ -7,7 +7,7 @@ Which features did you implement?
   (list features, or write 'Entire assignment')
   All features excluding
   (Milestone 1) closing idle connections, If-Modified-Since, and If-Unmodified-Since.
-  (Milestone 2) sessions and cookies, error log in /control, servlet names in /control, error 405 for unsupported methods
+  (Milestone 2) sessions and cookies, error log in /control
 
 Did you complete any extra-credit tasks? If so, which ones?
   (list extra-credit tasks)
@@ -15,7 +15,7 @@ Did you complete any extra-credit tasks? If so, which ones?
 
 Any special instructions for building and running your solution?
   (include detailed instructions, or write 'None')
-  I hardcoded arguments in the build.xml file. These need to be changed.
+  I hardcoded arguments in the build.xml file. These might need to be changed.
 
 Did you personally write _all_ the code you are submitting
 (other than code from the course web page)?

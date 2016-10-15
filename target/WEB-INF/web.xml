@@ -17,6 +17,11 @@
         <param-value>olszewska</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>webmaster</param-name>
+        <param-value>Piotr Jander</param-value>
+    </context-param>
+
     <servlet>
         <servlet-name>TestServlet</servlet-name>
         <servlet-class>edu.upenn.cis.cis455.webserver.app.TestServlet</servlet-class>
@@ -35,6 +40,25 @@
         </init-param>
     </servlet>
 
+    <servlet>
+        <servlet-name>BusyServlet</servlet-name>
+        <servlet-class>edu.upenn.cis.cis455.webserver.app.BusyServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>DemoServlet</servlet-name>
+        <servlet-class>edu.upenn.cis.cis455.webserver.app.DemoServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>InitParamServlet</servlet-name>
+        <servlet-class>edu.upenn.cis.cis455.webserver.app.InitParamServlet</servlet-class>
+        <init-param>
+            <param-name>TestParam</param-name>
+            <param-value>surprise</param-value>
+        </init-param>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>TestServlet</servlet-name>
         <url-pattern>/test/</url-pattern>
@@ -43,6 +67,21 @@
     <servlet-mapping>
         <servlet-name>CalculatorServlet</servlet-name>
         <url-pattern>/calculator/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>BusyServlet</servlet-name>
+        <url-pattern>/busy/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>InitParamServlet</servlet-name>
+        <url-pattern>/init/param/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DemoServlet</servlet-name>
+        <url-pattern>/demo/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
