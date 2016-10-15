@@ -29,6 +29,14 @@ public class HttpRequest {
         this.in = in;
     }
 
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public void setMethod(HttpMethod method) {
+        this.method = method;
+    }
+
     void parse() throws IOException {
         try {
             parseFirstLine();

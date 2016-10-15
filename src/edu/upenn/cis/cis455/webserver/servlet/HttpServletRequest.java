@@ -33,7 +33,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private String servletPath;
     private String pathInfo;
 
-    HttpServletRequest(HttpRequest baseRequest) {
+    public HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
         parameters = splitQuery(baseRequest.getUrl().getQuery());
     }
@@ -227,14 +227,22 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
      * POST parameters are merged with possible GET (query) parameters and will override them in the case of conflict.
      */
     private void makePostParameters() {
+        try {
+            BufferedReader reader = getReader();
+            makePostParametersHelper(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    void makePostParametersHelper(BufferedReader reader) throws IOException {
         if (!isPostParametersRead && baseRequest.getMethod() == HttpMethod.POST) {
-            try {
-                BufferedReader reader = getReader();
-                String line = reader.readLine();
+            String line = reader.readLine();
+            if (line != null) {
                 parameters.putAll(splitQuery(line));
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            isPostParametersRead = true;
         }
     }
 
