@@ -22,7 +22,8 @@ public class HttpResponse {
 
     private byte[] payload = new byte[0];
 
-    public HttpResponse() {}
+    public HttpResponse() {
+    }
 
     HttpResponse(HttpRequest req) {
         this.request = req;
@@ -37,8 +38,9 @@ public class HttpResponse {
             error(HttpStatus.BAD_REQUEST).send();
         } else if (request.hasServerError()) {
             error(HttpStatus.INTERNAL_SERVER_ERROR).send();
-        } else if (request.getMethod() != HttpMethod.GET && request.getMethod() != HttpMethod.HEAD) {
-            error(HttpStatus.NOT_IMPLEMENTED).send();
+        } else if (request.getMethod() != HttpMethod.GET && request.getMethod() != HttpMethod.HEAD
+                && request.getMethod() != HttpMethod.POST) {
+            error(HttpStatus.METHOD_NOT_ALLOWED).send();
         }
     }
 

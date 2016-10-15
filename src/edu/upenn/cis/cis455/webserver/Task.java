@@ -46,6 +46,7 @@ class Task {
             log.info("Processing request starts");
             processRequest(binaryOut, out, in);
         } finally {
+            log.info("Closing the socket.");
             socket.close();
         }
     }

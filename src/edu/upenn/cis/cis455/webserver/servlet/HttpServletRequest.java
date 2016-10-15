@@ -203,14 +203,14 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         }
         return Arrays.stream(query.split("&"))
                 .map(this::splitQueryParameter)
-                .collect(Collectors.groupingBy(AbstractMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
+                .collect(Collectors.groupingBy(HashMap.SimpleImmutableEntry::getKey, LinkedHashMap::new, mapping(Map.Entry::getValue, toList())));
     }
 
-    private AbstractMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
+    private HashMap.SimpleImmutableEntry<String, String> splitQueryParameter(String it) {
         final int idx = it.indexOf("=");
         final String key = idx > 0 ? it.substring(0, idx) : it;
         final String value = idx > 0 && it.length() > idx + 1 ? it.substring(idx + 1) : null;
-        return new AbstractMap.SimpleImmutableEntry<>(key, value);
+        return new HashMap.SimpleImmutableEntry<>(key, value);
     }
 
     // END borrowed
@@ -238,10 +238,14 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     void makePostParametersHelper(BufferedReader reader) throws IOException {
         if (!isPostParametersRead && baseRequest.getMethod() == HttpMethod.POST) {
-            String line = reader.readLine();
-            if (line != null) {
-                parameters.putAll(splitQuery(line));
-            }
+            int contentLength = getIntHeader("Content-Length");
+            char[] buffer = new char[contentLength];
+            int charsRead = reader.read(buffer, 0, contentLength);
+            String line = new String(buffer);
+            HashMap<String, List<String>> params = new HashMap<>();
+            params.putAll(parameters);
+            params.putAll(splitQuery(line));
+            parameters = params;
             isPostParametersRead = true;
         }
     }

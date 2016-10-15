@@ -11,9 +11,14 @@ public class BusyServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("<HTML><HEAD><TITLE>Busy Servlet</TITLE></HEAD><BODY>");
 		out.println("<P>Starting work...</P>");
-		for (int j = 1; j < 3; ++j) {
-			for (int i = 0; i < Integer.MAX_VALUE; ++i) {
-			}
+//		for (int j = 1; j < 3; ++j) {
+//			for (int i = 0; i < Integer.MAX_VALUE; ++i) {
+//			}
+//		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		out.println("<P>Done!</P>");
 		out.println("</BODY></HTML>");		
