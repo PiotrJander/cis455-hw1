@@ -32,6 +32,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private boolean isPostParametersRead = false;
     private String servletPath;
     private String pathInfo;
+    private Map<String, String> cookies;
 
     public HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
@@ -44,18 +45,29 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
         parameters = splitQuery(baseRequest.getUrl().getQuery());
         servletPath = match.getServletPath();
         pathInfo = match.getPathInfo();
+        extractCookies();
+    }
+
+    private void extractCookies() {
+        String cookies = getHeader("Cookie");
+        String[] cookiesArray = cookies.trim().split("\\s*;\\s*");
+        for (String cookieString : cookiesArray) {
+            String[] cookieNameValue = cookieString.split("=");
+            this.cookies.put(cookieNameValue[0], cookieNameValue[1]);
+        }
     }
 
     // START session
 
     @Override
-    public HttpSession getSession(boolean b) {
+    public HttpSession getSession(boolean b) throws IllegalStateException {
+        // we need to lookup a cookie here
         return null;
     }
 
     @Override
-    public HttpSession getSession() {
-        return null;
+    public HttpSession getSession() throws IllegalStateException {
+        return getSession(true);
     }
 
     @Override

@@ -32,14 +32,14 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         this.baseResponse = baseResponse;
     }
 
+    // ****************************************************************************************************************
+    // DONE
+    // ****************************************************************************************************************
+
     @Override
     public void addCookie(Cookie cookie) {
         baseResponse.addCookie(cookie);
     }
-
-    // ****************************************************************************************************************
-    // DONE
-    // ****************************************************************************************************************
 
     public void send() throws SendHttpResponseException {
         flushBuffer();
