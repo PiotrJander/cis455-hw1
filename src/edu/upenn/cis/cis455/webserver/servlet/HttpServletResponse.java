@@ -14,6 +14,8 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class HttpServletResponse implements javax.servlet.http.HttpServletResponse {
@@ -30,19 +32,19 @@ public class HttpServletResponse implements javax.servlet.http.HttpServletRespon
         this.baseResponse = baseResponse;
     }
 
-    public void send() throws SendHttpResponseException {
-        flushBuffer();
-        baseResponse.send();
-    }
-
     @Override
     public void addCookie(Cookie cookie) {
-
+        baseResponse.addCookie(cookie);
     }
 
     // ****************************************************************************************************************
     // DONE
     // ****************************************************************************************************************
+
+    public void send() throws SendHttpResponseException {
+        flushBuffer();
+        baseResponse.send();
+    }
 
     // START committing
 

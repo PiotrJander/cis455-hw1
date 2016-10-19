@@ -1,15 +1,13 @@
 package edu.upenn.cis.cis455.webserver;
 
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class HttpResponse {
     private HttpRequest request;
@@ -19,6 +17,7 @@ public class HttpResponse {
     private HttpStatus status;
 
     private Map<String, List<String>> httpResponseHeaders = new HashMap<>();
+    private List<Cookie> cookies = new ArrayList<>();
 
     private byte[] payload = new byte[0];
 
@@ -64,6 +63,10 @@ public class HttpResponse {
         } else {
             setHeader(name, value);
         }
+    }
+
+    public void addCookie(Cookie cookie) {
+        cookies.add(cookie);
     }
 
     public void resetHeaders() {
@@ -117,6 +120,11 @@ public class HttpResponse {
             out.println(String.format("%s: %s", e.getKey(), String.join("", e.getValue())));
         }
 
+        // print Set-Cookie headers
+        for (Cookie cookie : cookies) {
+            out.println(cookieToString(cookie));
+        }
+
         // print empty line
         out.println();
 
@@ -126,6 +134,18 @@ public class HttpResponse {
         }
 
         binaryOut.write(payload);
+    }
+
+    private static String cookieToString(Cookie cookie) {
+        return String.format(
+                "Set-Cookie: %s=%s %s %s %s %s",
+                cookie.getName(),
+                cookie.getValue(),
+                cookie.getDomain() == null ? "" : "; Domain: " + cookie.getDomain(),
+                cookie.getPath() == null ? "" : "; Path: " + cookie.getPath(),
+                cookie.getMaxAge() == -1 ? "" : "; Max-Age: " + cookie.getMaxAge(),
+                cookie.getSecure() ? "; Secure" : ""
+                );
     }
 
     private String getStatusLine() {
