@@ -3,13 +3,12 @@ package edu.upenn.cis.cis455.webserver.servlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class ServletContext implements javax.servlet.ServletContext {
 

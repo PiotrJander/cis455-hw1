@@ -33,6 +33,7 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
     private String servletPath;
     private String pathInfo;
     private Map<String, String> cookies;
+    static private Map<String, HttpSession> sessions = new HashMap<>();
 
     public HttpServletRequest(HttpRequest baseRequest) {
         this.baseRequest = baseRequest;
@@ -59,10 +60,33 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     // START session
 
+    private String getCookieValue(String cookieName) {
+        return cookies.get(cookieName);
+    }
+
+    public HttpSession createAndGetSession() {
+        edu.upenn.cis.cis455.webserver.servlet.HttpSession httpSession
+                = new edu.upenn.cis.cis455.webserver.servlet.HttpSession();
+        sessions.put(httpSession.getId(), httpSession);
+        return httpSession;
+    }
+
     @Override
     public HttpSession getSession(boolean b) throws IllegalStateException {
-        // we need to lookup a cookie here
-        return null;
+        String sessionId = getCookieValue("sessionId");
+        if (sessionId == null) {
+            return null;
+        } else {
+            HttpSession httpSession = sessions.get(sessionId);
+            if (httpSession != null) {
+                return httpSession;
+            } else if (b) {
+                return createAndGetSession();
+                // TODO set cookie
+            } else {
+                return null;
+            }
+        }
     }
 
     @Override
@@ -72,21 +96,23 @@ public class HttpServletRequest implements javax.servlet.http.HttpServletRequest
 
     @Override
     public boolean isRequestedSessionIdValid() {
-        return false;
+        // TODO expiration here
+        return sessions.containsKey(getRequestedSessionId());
     }
 
     @Override
     public boolean isRequestedSessionIdFromCookie() {
-        return false;
+        return true;
     }
 
     @Override
     public String getRequestedSessionId() {
-        return null;
+        return getCookieValue("sessionId");
     }
 
     @Override
     public Cookie[] getCookies() {
+        // TODO convert
         return new Cookie[0];
     }
 

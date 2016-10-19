@@ -4,8 +4,15 @@ import javax.servlet.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionContext;
 import java.util.Enumeration;
+import java.util.UUID;
 
 public class HttpSession implements javax.servlet.http.HttpSession {
+
+    private String sessionId = UUID.randomUUID().toString();
+
+//    public HttpSession() {
+//    }
+
     @Override
     public long getCreationTime() {
         return 0;
